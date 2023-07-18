@@ -88,7 +88,7 @@ public class AccountController : Controller
                 await _signInManager.SignOutAsync();
                 var result =
                     await _signInManager.PasswordSignInAsync(user,
-                                           loginVM.Password, true, false);
+                                           loginVM.Password, false, false);
                 if (result.Succeeded)
                 {
                     // Redirect to returnUrl if it is set

@@ -1,0 +1,25 @@
+$primary: #07B184;
+
+// Include any default variable overrides here (though functions won't be available)
+@import "../lib/bootstrap/scss/bootstrap";
+
+// Then add additional custom code here
+$font-size-mobile: 14px;
+$font-size-desktop: 16px;
+
+// Apply styles to HTML element
+html {
+    font-size: $font-size-mobile;
+    // Media query for larger screens
+    @media (min-width: 768px) {
+        font-size: $font-size-desktop;
+    }
+    // Other styles for the HTML element
+    position: relative;
+    min-height: 100%;
+}
+
+// Apply styles to the body element
+body {
+    margin-bottom: 60px;
+}
