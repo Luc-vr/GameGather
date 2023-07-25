@@ -8,22 +8,22 @@ namespace DomainServices
         ICollection<BoardGameNight> GetAllBoardGameNights();
 
         // Get board game night by id (US_01)
-        BoardGameNight GetBoardGameNightById(int id);
+        BoardGameNight? GetBoardGameNightById(int id);
 
         // Get all attendees for a board game night (US_01)
         ICollection<User> GetAllAttendeesForBoardGameNight(int boardGameNightId);
 
         // Get all hosting board game nights for a user (US_01)
-        ICollection<BoardGameNight> GetAllHostingBoardGameNightsForUser();
+        ICollection<BoardGameNight> GetAllHostingBoardGameNightsForUser(int userId);
 
         // Get all attending board game nights for a user (US_01)
         ICollection<BoardGameNight> GetAllAttendingBoardGameNightsForUser();
 
         // Create board game night (US_02)
-        BoardGameNight CreateBoardGameNight(BoardGameNight boardGameNight);
+        void CreateBoardGameNight(BoardGameNight boardGameNight);
 
         // Update board game night (US_02)
-        BoardGameNight UpdateBoardGameNight(BoardGameNight boardGameNight);
+        void UpdateBoardGameNight(BoardGameNight boardGameNight);
 
         // Delete board game night (US_02)
         void DeleteBoardGameNight(BoardGameNight boardGameNight);

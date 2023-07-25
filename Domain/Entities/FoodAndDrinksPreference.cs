@@ -12,20 +12,16 @@ namespace Domain.Entities
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Please specify lactose free food")]
-        [Display(Name = "Lactose free:")]
+        [Required]
         public bool LactoseFree { get; set; }
 
-        [Required(ErrorMessage = "Please specify nut free food")]
-        [Display(Name = "Nut free:")]
+        [Required]
         public bool NutFree { get; set; }
 
-        [Required(ErrorMessage = "Please specify alcohol free drinks")]
-        [Display(Name = "Alcohol free:")]
+        [Required]
         public bool AlcoholFree { get; set; }
 
-        [Required(ErrorMessage = "Please specify vegetarian food")]
-        [Display(Name = "Vegetarian:")]
+        [Required]
         public bool Vegetarian { get; set; }
 
     }

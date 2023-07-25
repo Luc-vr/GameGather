@@ -16,67 +16,6 @@ public class SeedData : ISeedData
 
     public void EnsurePopulated(bool dropExisting = false)
     {
-        FoodAndDrinksPreference fadp1 = new()
-        {
-            AlcoholFree = false,
-            Vegetarian = false,
-            NutFree = false,
-            LactoseFree = false,
-        };
-
-        FoodAndDrinksPreference fadp2 = new()
-        {
-            AlcoholFree = true,
-            Vegetarian = true,
-            NutFree = true,
-            LactoseFree = true,
-        };
-
-        FoodAndDrinksPreference fadp3 = new()
-        {
-            AlcoholFree = true,
-            Vegetarian = false,
-            NutFree = false,
-            LactoseFree = false,
-        };
-
-        FoodAndDrinksPreference fadp4 = new()
-        {
-            AlcoholFree = false,
-            Vegetarian = true,
-            NutFree = false,
-            LactoseFree = false,
-        };
-
-        FoodAndDrinksPreference fadp5 = new()
-        {
-            AlcoholFree = false,
-            Vegetarian = false,
-            NutFree = false,
-            LactoseFree = false,
-        };
-
-        FoodAndDrinksPreference fadp6 = new()
-        {
-            AlcoholFree = true,
-            Vegetarian = true,
-            NutFree = true,
-            LactoseFree = true,
-        };
-
-        User user1 = new()
-        {
-            FirstName = "Khalid",
-            LastName = "Mimouni",
-            Email = "DJK@beats.nl",
-            BirthDate = new DateTime(1990, 1, 1),
-            FoodAndDrinksPreference = fadp1,
-            Gender = Domain.Enums.Gender.Male,
-            City = "Enschede",
-            Street = "Rode Stierweg",
-            HouseNumber = 42,
-        };
-
         if (dropExisting)
         {
             _context.Database.EnsureDeleted();
@@ -88,15 +27,19 @@ public class SeedData : ISeedData
         {
             _logger.LogInformation("Preparing to seed food and drinks prefs");
 
-            _context.FoodAndDrinksPreferences.AddRange(new[]
+            for (int i = 0; i < 12; i++)
             {
-                fadp1,
-                fadp2,
-                fadp3,
-                fadp4,
-                fadp5,
-                fadp6,
-                });
+                FoodAndDrinksPreference fadp = new()
+                {
+                    AlcoholFree = false,
+                    Vegetarian = false,
+                    NutFree = false,
+                    LactoseFree = false,
+                };
+
+                _context.FoodAndDrinksPreferences.Add(fadp);
+            }
+
             _context.SaveChanges();
             _logger.LogInformation("Food and drinks prefs seeded");
         } else
@@ -105,6 +48,54 @@ public class SeedData : ISeedData
         }
 
         // Seed users
+        User user1 = new()
+        {
+            FirstName = "Khalid",
+            LastName = "Mimouni",
+            Email = "DJK@beats.nl",
+            BirthDate = new DateTime(1990, 1, 1),
+            FoodAndDrinksPreferenceId = 1,
+            Gender = Domain.Enums.Gender.Other,
+            City = "Enschede",
+            Address = "Rode Stierweg 42"
+        };
+
+        User user2 = new()
+        {
+            FirstName = "Christian",
+            LastName = "Nijssen",
+            Email = "runescape@chris.nl",
+            BirthDate = new DateTime(1995, 1, 1),
+            FoodAndDrinksPreferenceId = 2,
+            Gender = Domain.Enums.Gender.Male,
+            City = "Tilburg",
+            Address = "Verdwijnlaan 6"
+        };
+
+        User user3 = new()
+        {
+            FirstName = "Janou",
+            LastName = "Blom",
+            Email = "breda@janou.nl",
+            BirthDate = new DateTime(1993, 1, 1),
+            FoodAndDrinksPreferenceId = 3,
+            Gender = Domain.Enums.Gender.Female,
+            City = "Breda",
+            Address = "De Haven 9"
+        };
+
+        User user4 = new()
+        {
+            FirstName = "Jelmar",
+            LastName = "Dekker",
+            Email = "jelmar@geld.nl",
+            BirthDate = new DateTime(1993, 1, 1),
+            FoodAndDrinksPreferenceId = 4,
+            Gender = Domain.Enums.Gender.Male,
+            City = "Maasdam",
+            Address = "Welvaartstraat 1"
+        };
+
         if (_context.Users?.Count() == 0)
         {
             _logger.LogInformation("Preparing to seed users");
@@ -112,6 +103,9 @@ public class SeedData : ISeedData
             _context.Users.AddRange(new[]
             {
                 user1,
+                user2,
+                user3,
+                user4
             });
             _context.SaveChanges();
             _logger.LogInformation("Users seeded");
@@ -180,9 +174,8 @@ public class SeedData : ISeedData
                 DateTime = DateTime.Now.AddDays(1),
                 IsAdultOnly = false,
                 City = "Zwijndrecht",
-                Street = "Koninginneweg",
-                HouseNumber = 12,
-                FoodAndDrinksPreferenceId = fadp5.Id,
+                Address = "Koninginneweg 12",
+                FoodAndDrinksPreferenceId = 5,
                 HostId = user1.Id
             };
 
@@ -192,16 +185,87 @@ public class SeedData : ISeedData
                 DateTime = DateTime.Now.AddDays(2),
                 IsAdultOnly = false,
                 City = "Breda",
-                Street = "Dorpstraat",
-                HouseNumber = 45,
+                Address = "Dorpstraat 45",
                 FoodAndDrinksPreferenceId = 6,
                 HostId = user1.Id
+            };
+
+            BoardGameNight bgn3 = new()
+            {
+                MaxAttendees = 8,
+                DateTime = DateTime.Now.AddDays(3),
+                IsAdultOnly = true,
+                City = "Rotterdam",
+                Address = "Stadhuisplein 1",
+                FoodAndDrinksPreferenceId = 7,
+                HostId = user1.Id
+            };
+
+            BoardGameNight bgn4 = new()
+            {
+                MaxAttendees = 6,
+                DateTime = DateTime.Now.AddDays(4),
+                IsAdultOnly = false,
+                City = "Amsterdam",
+                Address = "Damrak 1",
+                FoodAndDrinksPreferenceId = 8,
+                HostId = user2.Id
+            };
+
+            BoardGameNight bgn5 = new()
+            {
+                MaxAttendees = 10,
+                DateTime = DateTime.Now.AddDays(5),
+                IsAdultOnly = false,
+                City = "Utrecht",
+                Address = "Domplein 29",
+                FoodAndDrinksPreferenceId = 9,
+                HostId = user2.Id
+            };
+
+            BoardGameNight bgn6 = new()
+            {
+                MaxAttendees = 5,
+                DateTime = DateTime.Now.AddDays(6),
+                IsAdultOnly = true,
+                City = "Eindhoven",
+                Address = "Stationsplein 17",
+                FoodAndDrinksPreferenceId = 10,
+                HostId = user3.Id
+            };
+
+            BoardGameNight bgn7 = new()
+            {
+                MaxAttendees = 12,
+                DateTime = DateTime.Now.AddDays(7),
+                IsAdultOnly = false,
+                City = "Den Haag",
+                Address = "Binnenhof 8",
+                FoodAndDrinksPreferenceId = 11,
+                HostId = user3.Id
+            };
+
+            BoardGameNight bgn8 = new()
+            {
+                MaxAttendees = 3,
+                DateTime = DateTime.Now.AddDays(8),
+                IsAdultOnly = false,
+                City = "Groningen",
+                Address = "Grote Markt 1",
+                FoodAndDrinksPreferenceId = 12,
+                HostId = user3.Id
             };
 
             _context.BoardGameNights.AddRange(new[]
             {
                 bgn1,
-                bgn2
+                bgn2,
+                bgn3,
+                bgn4,
+                bgn5,
+                bgn6,
+                bgn7,
+                bgn8
             });
 
             _context.SaveChanges();

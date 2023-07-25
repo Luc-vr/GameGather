@@ -1,0 +1,107 @@
+﻿@model BoardGameNightViewModel
+@{
+    ViewData["Title"] = "Editing board game night";
+}
+
+<form asp-controller="BoardGameNight" asp-action="Edit" method="post">
+    <input asp-for="Id" type="hidden" />
+    <div class="row justify-content-evenly mt-5">
+        <div class="col-lg-4">
+            <img src="/images/schedule-illustration.svg" alt="Host board game night image" class="img-fluid mt-5">
+        </div>
+        <div class="col-lg-6">
+            <div class="mb-4">
+                <h3>@ViewBag.Title</h3>
+                <p class="mb-4">
+                    Use the form below to edit your game night. You can only edit your game night as long as no one has joined it yet.
+                </p>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <h4>Event details</h4>
+                </div>
+                <div class="col-lg-6">
+
+                    <div class="form-group mb-2">
+                        <label asp-for="DateTime"></label>
+                        <input asp-for="DateTime" class="form-control" />
+                        <span asp-validation-for="DateTime" class="validation-error"></span>
+                    </div>
+
+                    <div class="form-group mb-2">
+                        <label asp-for="MaxAttendees"></label>
+                        <input asp-for="MaxAttendees" class="form-control" />
+                        <span asp-validation-for="MaxAttendees" class="validation-error"></span>
+                    </div>
+
+                    <div class="form-group mb-2">
+                        @if (Model.HasAdultGames())
+                        {
+                            <div class="form-check" data-toggle="tooltip" data-bs-placement="right" title="Can't change this because game night has an adult only game.'">
+                                <input asp-for="IsAdultOnly" class="form-check-input" disabled />
+                                <label asp-for="IsAdultOnly" class="form-check-label"></label>
+                            </div>
+                        } else
+                        {
+                            <div class="form-check">
+                                <input asp-for="IsAdultOnly" class="form-check-input" />
+                                <label asp-for="IsAdultOnly" class="form-check-label"></label>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="col-lg-6">
+
+                    <div class="form-group mb-2">
+                        <label asp-for="City"></label>
+                        <input asp-for="City" class="form-control" />
+                        <span asp-validation-for="City" class="validation-error"></span>
+                    </div>
+
+                    <div class="form-group mb-2">
+                        <label asp-for="Address"></label>
+                        <input asp-for="Address" class="form-control" />
+                        <span asp-validation-for="Address" class="validation-error"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-12">
+                    <h4>Food and drinks</h4>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input asp-for="FoodAndDrinksPreference!.LactoseFree" class="form-check-input" />
+                            <label asp-for="FoodAndDrinksPreference!.LactoseFree" class="form-check-label"></label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input asp-for="FoodAndDrinksPreference!.NutFree" class="form-check-input" />
+                            <label asp-for="FoodAndDrinksPreference!.NutFree" class="form-check-label"></label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input asp-for="FoodAndDrinksPreference!.AlcoholFree" class="form-check-input" />
+                            <label asp-for="FoodAndDrinksPreference!.AlcoholFree" class="form-check-label"></label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input asp-for="FoodAndDrinksPreference!.Vegetarian" class="form-check-input" />
+                            <label asp-for="FoodAndDrinksPreference!.Vegetarian" class="form-check-label"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-12">
+                    <button class="btn btn-block btn-primary px-3" type="submit">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

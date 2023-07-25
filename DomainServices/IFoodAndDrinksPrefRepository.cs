@@ -10,6 +10,6 @@ namespace DomainServices
     public interface IFoodAndDrinksPrefRepository
     {
         // Update food and drinks preferences
-        FoodAndDrinksPreference UpdateFoodAndDrinksPref(FoodAndDrinksPreference foodAndDrinksPref);
+        void UpdateFoodAndDrinksPref(FoodAndDrinksPreference foodAndDrinksPref);
     }
 }

@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 namespace Web.Models;
 public class LoginViewModel
 {
-    [Required]
+    [Required(ErrorMessage = "Please enter your email address")]
     public string Email { get; set; } = null!;
-    [Required]
+    [Required(ErrorMessage = "Please enter your password")]
     [UIHint("Password")]
     [PasswordPropertyText]
     public string Password { get; set; } = null!;
-    public string ReturnUrl { get; set; } = "/";
+    public string? ReturnUrl { get; set; }
 }

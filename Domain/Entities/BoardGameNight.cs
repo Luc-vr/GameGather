@@ -10,34 +10,26 @@ namespace Domain.Entities
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Please enter the maximum number of attendees")]
-        [Display(Name = "Maximum Attendees:")]
+        [Required]
         public int MaxAttendees { get; set; }
 
-        [Required(ErrorMessage = "Please enter the date and time of the board game night")]
-        [Display(Name = "Date and Time:")]
+        [Required]
         public DateTime DateTime { get; set; }
 
-        [Required(ErrorMessage = "Please specify if the game night is for adults only")]
-        [Display(Name = "Adult Only:")]
+        [Required]
         public bool IsAdultOnly { get; set; }
 
-        [Required(ErrorMessage = "Please enter the city")]
-        [Display(Name = "City:")]
+        [Required]
         public string? City { get; set; }
 
-        [Required(ErrorMessage = "Please enter the street")]
-        [Display(Name = "Street:")]
-        public string? Street { get; set; }
-
-        [Required(ErrorMessage = "Please enter the house number")]
-        [Display(Name = "House Number:")]
-        public int HouseNumber { get; set; }
+        [Required]
+        public string? Address { get; set; }
 
         [ForeignKey("FoodAndDrinksPreferenceId")]
         public FoodAndDrinksPreference? FoodAndDrinksPreference { get; set; }
 
         public int FoodAndDrinksPreferenceId { get; set; }
+
         [ForeignKey(nameof(Host))]
         public int HostId { get; set; }
 

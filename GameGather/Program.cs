@@ -3,11 +3,22 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Infrastructure.Seed;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using DomainServices;
+using Infrastructure.Repos;
+using NToastNotify;
+using Web.MappingProfiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Set the repository to use for dependency injection
+builder.Services.AddScoped<IBoardGameNightRepository, BoardGameNightRepository>();
+builder.Services.AddScoped<IBoardGameRepository, BoardGameRepository>();
+builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IFoodAndDrinksPrefRepository, FoodAndDrinksPrefRepository>();
 
 // Add seeders to the container
 builder.Services.AddScoped<SeedData>()
@@ -22,12 +33,13 @@ builder.Services.AddDbContext<IdentityDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("UserAccountbConnection"))
     .EnableSensitiveDataLogging(true));
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+{
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 8;
+})
     .AddEntityFrameworkStores<IdentityDbContext>()
     .AddDefaultTokenProviders();
-
-//builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-//    .AddEntityFrameworkStores<AccountDbContext>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
@@ -41,7 +53,6 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 // Configure cookie policy
 builder.Services.Configure<CookiePolicyOptions>(options =>
 {
-    options.CheckConsentNeeded = context => true;
     options.MinimumSameSitePolicy = SameSiteMode.Strict;
 });
 
@@ -53,6 +64,17 @@ builder.Services.AddSession(options =>
     options.IdleTimeout = TimeSpan.FromHours(1);
     options.Cookie.HttpOnly = true;
 });
+
+// Add ntoastnotify service for notifications
+builder.Services.AddMvcCore().AddNToastNotifyToastr(new ToastrOptions()
+{
+    ProgressBar = true,
+    PositionClass = ToastPositions.BottomCenter,
+    TimeOut = 3000,
+    ExtendedTimeOut = 3000,
+});
+
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();
 
@@ -71,7 +93,9 @@ if (!app.Environment.IsDevelopment())
 {
     // Only in dev env seed with dummy data -->
     SeedDatabase();
-} 
+}
+
+app.UseNToastNotify();
 
 app.UseStaticFiles();
 

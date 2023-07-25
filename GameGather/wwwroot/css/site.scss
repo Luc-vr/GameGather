@@ -1,9 +1,16 @@
-$primary: #07B184;
+// Import SASS modules
+@use "sass:color";
 
-// Include any default variable overrides here (though functions won't be available)
+// Override Bootstrap variables
+$primary: #07B184;
+$primary-dark: color.scale($primary, $lightness: -5%);
+$primary-darker: color.scale($primary, $lightness: -10%);
+$primary-light: color.scale($primary, $lightness: 5%);
+
+// Import Bootstrap source files
 @import "../lib/bootstrap/scss/bootstrap";
 
-// Then add additional custom code here
+// Define custom variables
 $font-size-mobile: 14px;
 $font-size-desktop: 16px;
 
@@ -22,4 +29,31 @@ html {
 // Apply styles to the body element
 body {
     margin-bottom: 60px;
+}
+
+// Customize primary button
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:focus-visible {
+    color: white !important;
+}
+
+// Customize nav-item
+.nav-item {
+    padding: 0.3rem 1rem;
+}
+
+.nav-item:last-child {
+    border-right: none;
+}
+
+.nav-item.active {
+    background-color: $primary-darker;
+}
+
+.nav-item:hover {
+    background-color: $primary-dark;
+}
+
+.validation-error {
+    color: red;
+    font-size: 0.9rem;
 }

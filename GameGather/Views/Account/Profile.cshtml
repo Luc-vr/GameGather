@@ -1,0 +1,74 @@
+﻿@model ProfileViewModel
+@{
+    ViewBag.Title = "My profile";
+    Layout = "Layout/_Authenticatedlayout";
+}
+<form asp-controller="Account" asp-action="Profile" method="post">
+    <div class="row justify-content-evenly mt-5">
+        <div class="col-lg-6">
+            <div class="mb-4">
+                <h3>@ViewBag.Title</h3>
+                <p class="mb-4">Here you can view and/or update your profile information.</p>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group my-2">
+                                <label asp-for="FirstName"></label>
+                                <input asp-for="FirstName" class="form-control" />
+                                <span asp-validation-for="FirstName" class="validation-error"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group my-2">
+                                <label asp-for="LastName"></label>
+                                <input asp-for="LastName" class="form-control" />
+                                <span asp-validation-for="LastName" class="validation-error"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-2">
+                        <label asp-for="Email"></label>
+                        <input asp-for="Email" class="form-control" disabled />
+                        @* Hidden field so that the email is passed on to the controller to prevent validation error *@
+                        <input asp-for="Email" type="hidden" /> 
+                        <span asp-validation-for="Email" class="validation-error"></span>
+                    </div>
+
+                    <div class="form-group my-2">
+                        <label asp-for="Gender"></label>
+                        <select asp-for="Gender" asp-items="@Html.GetEnumSelectList<Gender>()" class="form-control">
+                            <option value="">Select gender</option>
+                        </select>
+                        <span asp-validation-for="Gender" class="validation-error"></span>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group my-2">
+                        <label asp-for="BirthDate"></label>
+                        <input asp-for="BirthDate" class="form-control" type="date" />
+                        <span asp-validation-for="BirthDate" class="validation-error"></span>
+                    </div>
+
+                    <div class="form-group my-2">
+                        <label asp-for="City"></label>
+                        <input asp-for="City" class="form-control" />
+                        <span asp-validation-for="City" class="validation-error"></span>
+                    </div>
+
+                    <div class="form-group my-2">
+                        <label asp-for="Address"></label>
+                        <input asp-for="Address" class="form-control" />
+                        <span asp-validation-for="Address" class="validation-error"></span>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary my-2 px-3">Update profile</button>
+        </div>
+        <div class="col-lg-4">
+            <img src="/images/profile-illustration.svg" alt="Profile image" class="img-fluid mt-5">
+        </div>
+    </div>
+</form>

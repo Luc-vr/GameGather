@@ -10,42 +10,34 @@ namespace Domain.Entities
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Please enter your first name")]
-        [Display(Name = "First name:")]
+        [Required]
         [MaxLength(255)]
         public string? FirstName { get; set; }
 
-        [Required(ErrorMessage = "Please enter your last name")]
-        [Display(Name = "Last name:")]
+        [Required]
         [MaxLength(255)]
         public string? LastName { get; set; }
 
-        [Required(ErrorMessage = "Please enter your email address")]
-        [Display(Name = "Email address:")]
+        [Required]
         [MaxLength(255)]
-        [EmailAddress(ErrorMessage = "Please enter a valid email address")]
+        [EmailAddress]
         public string? Email { get; set; }
 
-        [Required(ErrorMessage = "Please pick your gender")]
+        [Required]
         [Display(Name = "Gender:")]
-        public Gender Gender { get; set; }
+        public Gender? Gender { get; set; }
 
-        [Required(ErrorMessage = "Please enter your birth date")]
+        [Required]
         [Display(Name = "Birth date:")]
         [DataType(DataType.Date)]
-        public DateTime BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
 
-        [Required(ErrorMessage = "Please enter the city")]
+        [Required]
         [Display(Name = "City:")]
         public string? City { get; set; }
 
-        [Required(ErrorMessage = "Please enter the street")]
-        [Display(Name = "Street:")]
-        public string? Street { get; set; }
-
-        [Required(ErrorMessage = "Please enter the house number")]
-        [Display(Name = "House Number:")]
-        public int HouseNumber { get; set; }
+        [Required]
+        public string? Address { get; set; }
 
         [ForeignKey("FoodAndDrinksPreferenceId")]
         public FoodAndDrinksPreference? FoodAndDrinksPreference { get; set; }

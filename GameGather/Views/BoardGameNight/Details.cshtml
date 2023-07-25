@@ -1,0 +1,111 @@
+﻿@model BoardGameNightViewModel
+@{
+    ViewData["Title"] = "Board game night";
+}
+<div class="row justify-content-center my-4">
+    <div class="col-sm-4">
+        <h4 class="secondary">Board game night details</h4>
+    </div>
+    <div class="col-sm-4 d-flex justify-content-end">
+        @if (Model.IsHost)
+        {
+            <a class="btn btn-secondary d-flex align-items-center" asp-controller="BoardGameNight" asp-action="Hosting">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span class="ms-2">Go back</span>
+            </a>
+            @if (Model.Attendees!.Count() < 1)
+            {
+                <a class="btn btn-warning d-flex align-items-center mx-2" asp-controller="BoardGameNight" asp-action="Edit" asp-route-boardGameNightId="@Model.Id">
+                    <i class="fa-solid fa-wrench"></i>
+                    <span class="ms-2">Edit</span>
+                </a>
+                <form asp-controller="BoardGameNight" asp-action="Delete" method="post">
+                    <input type="hidden" asp-for="Id" />
+                    <button type="submit" class="btn btn-danger d-flex align-items-center">
+                        <i class="fa-solid fa-trash-can"></i>
+                        <span class="ms-2">Delete</span>
+                    </button>
+                </form>
+
+            } else
+            {
+                <span class="d-inline-block mx-2" tabindex="0" data-toggle="tooltip" data-bs-placement="bottom" title="Editing is not allowed after someone has joined">
+                    <a class="btn btn-warning d-flex align-items-center disabled" asp-controller="BoardGameNight" asp-action="Edit" asp-route-boardGameNightId="Model.Id">
+                        <i class="fa-solid fa-wrench"></i>
+                        <span class="ms-2">Edit</span>
+                    </a>
+                </span>
+                <span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-bs-placement="bottom" title="Deleting is not allowed after someone has joined">
+                    <a class="btn btn-danger d-flex align-items-center disabled" asp-controller="BoardGameNight" asp-action="Delete" asp-route-boardGameNightId="@Model.Id">
+                        <i class="fa-solid fa-trash-can"></i>
+                        <span class="ms-2">Delete</span>
+                    </a>
+                </span>
+            }
+
+        }
+    </div>
+</div>
+<div class="row justify-content-center mt-4">
+    <div class="col-lg-4">
+        <div class="card mb-3">
+            <b class="card-header">
+                Event information
+            </b>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><i class="fa-solid fa-calendar-days"></i> Date: @Model.DateTime.ToString("dddd, dd MMMM yyyy")</li>
+                <li class="list-group-item"><i class="fa-regular fa-clock"></i> Time: @Model.DateTime.ToString("HH:mm")</li>
+                <li class="list-group-item"><i class="fa-solid fa-users"></i> Attendees: @(Model.Attendees?.Count() ?? 0) / @Model.MaxAttendees</li>
+                <li class="list-group-item"><i class="fa-solid fa-chess-board"></i> Board games: @(Model.BoardGames?.Count() ?? 0)</li>
+                <li class="list-group-item"><i class="fa-solid fa-city"></i> City: @Model.City</li>
+                <li class="list-group-item"><i class="fa-solid fa-location-dot"></i> Address: @Model.Address</li>
+                <li class="list-group-item"><i class="fa-solid fa-user-slash"></i> Is adult only: @(Model.IsAdultOnly ? "Yes" : "No")</li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card mb-3">
+            <b class="card-header">
+                Foods & drinks
+            </b>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    @if (Model.FoodAndDrinksPreference!.LactoseFree)
+                    {
+                        <span class="text-success"><i class="fa-solid fa-cheese"></i> There will be lactose free food/drinks</span>
+                    } else
+                    {
+                        <span class="text-danger"><i class="fa-solid fa-cheese"></i> There <b>won't</b> be lactose free food/drinks</span>
+                    }
+                </li>
+                <li class="list-group-item">
+                    @if (Model.FoodAndDrinksPreference!.NutFree)
+                    {
+                        <span class="text-success"><i class="fa-solid fa-bowl-rice"></i> There will be nut free food</span>
+                    } else
+                    {
+                        <span class="text-danger"><i class="fa-solid fa-bowl-rice"></i> There <b>won't</b> be nut free food</span>
+                    }
+                </li>
+                <li class="list-group-item">
+                    @if (Model.FoodAndDrinksPreference!.AlcoholFree)
+                    {
+                        <span class="text-success"><i class="fa-solid fa-beer-mug-empty"></i> There will be alcohol free drinks</span>
+                    } else
+                    {
+                        <span class="text-danger"><i class="fa-solid fa-beer-mug-empty"></i> There <b>won't</b> be alcohol free drinks</span>
+                    }
+                </li>
+                <li class="list-group-item">
+                    @if (Model.FoodAndDrinksPreference!.Vegetarian)
+                    {
+                        <span class="text-success"><i class="fa-solid fa-drumstick-bite"></i> There will be vegetarian food</span>
+                    } else
+                    {
+                        <span class="text-danger"><i class="fa-solid fa-drumstick-bite"></i> There <b>won't</b> be vegetarian food</span>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
