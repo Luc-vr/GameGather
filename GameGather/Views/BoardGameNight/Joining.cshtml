@@ -1,4 +1,4 @@
-﻿@model (List<BoardGameNightViewModel> upcomingBoardGameNightVMs, List<BoardGameNightViewModel> pastBoardGameNightVMs)
+﻿@model (List<BoardGameNightViewModel> joinedBoardGameNights, List<BoardGameNightViewModel> pastBoardGameNightVMs)
 @{
     ViewData["Title"] = "Hosting board game nights";
 }
@@ -7,22 +7,21 @@
     <div class="col-lg-10">
         <div class="row my-4">
             <div class="col-sm-6">
-                <h4 class="secondary">Your upcoming board game nights as host</h4>
+                <h4 class="secondary">Joined board game nights </h4>
             </div>
             <div class="col-sm-6 d-flex justify-content-end">
-                <a class="btn btn-primary d-flex align-items-center px-3 py-2" asp-controller="BoardGameNight" asp-action="Create"><i class="fa-solid fa-calendar-plus"></i> <span class="ms-2">New board game night</span></a>
-                @if (Model.upcomingBoardGameNightVMs.Count() > 3)
+                @if (Model.joinedBoardGameNights.Count() > 3)
                 {
-                    <a class="btn btn-primary px-3 mx-3" asp-controller="BoardGameNight" asp-action="AllUpcomingHosting"><i class="fa-solid fa-list"></i> <span class="ms-2">See all</span></a>
+                    <a class="btn btn-primary px-3 mx-3" asp-controller="BoardGameNight" asp-action="AllUpcomingJoined"><i class="fa-solid fa-list"></i> <span class="ms-2">See all</span></a>
                 }
             </div>
         </div>
-        @if (Model.upcomingBoardGameNightVMs.Count() > 0)
+        @if (Model.joinedBoardGameNights.Count() > 0)
         {
-            @for (int i = 0; i < Math.Min(3, Model.upcomingBoardGameNightVMs.Count()); i += 3)
+            @for (int i = 0; i < Math.Min(3, Model.joinedBoardGameNights.Count()); i += 3)
             {
                 <div class="row">
-                    @foreach (BoardGameNightViewModel bgn in Model.upcomingBoardGameNightVMs.Skip(i).Take(3))
+                    @foreach (BoardGameNightViewModel bgn in Model.joinedBoardGameNights.Skip(i).Take(3))
                     {
                         <div class="col-md-4">
                             <div class="card mb-3">
@@ -30,10 +29,12 @@
                                     @bgn.DateTime.ToString("dddd, dd MMMM yyyy HH:mm")
                                 </b>
                                 <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">Attendees: @(bgn.Attendees?.Count() ?? 0) / @bgn.MaxAttendees</li>
+                                    <li class="list-group-item">Host: @(bgn.Host?.FirstName) @(bgn.Host?.LastName)</li>
                                     <li class="list-group-item">Board games: @(bgn.BoardGames?.Count() ?? 0)</li>
                                     <li class="list-group-item">City: @bgn.City</li>
                                     <li class="list-group-item">Address: @bgn.Address</li>
+                                    <li class="list-group-item"><i class="fa-solid fa-user-slash"></i> Is adult only: @(bgn.IsAdultOnly ? "Yes" : "No")</li>
+
                                 </ul>
                                 <div class="card-footer">
                                     <a class="btn btn-primary px-3" asp-controller="BoardGameNight" asp-action="Details" asp-route-boardGameNightId="@bgn.Id">Details</a>
@@ -45,24 +46,18 @@
             }
         } else
         {
-            <h4 class="secondary lead"><em>You are not hosting any board game nights soon <i class="fa-regular fa-face-frown"></i></em></h4>
+            <h4 class="secondary lead"><em>You are not attending any board game nights soon <i class="fa-regular fa-face-frown"></i></em></h4>
         }
     </div>
     <div class="col-lg-10">
         <div class="row my-4">
-            <div class="col-sm-8">
-                <h4 class="secondary">Your previous board game nights as host</h4>
-            </div>
-            <div class="col-sm-4 d-flex justify-content-end">
-                @if (Model.pastBoardGameNightVMs.Count() > 3)
-                {
-                    <a class="btn btn-primary px-3 mx-3" asp-controller="BoardGameNight" asp-action="AllPastHosting"><i class="fa-solid fa-list"></i> <span class="ms-2">See all</span></a>
-                }
+            <div class="col-sm-12">
+                <h4 class="secondary">Upcoming board game nights</h4>
             </div>
         </div>
         @if (Model.pastBoardGameNightVMs.Count() > 0)
         {
-            @for (int i = 0; i < Math.Min(3, Model.pastBoardGameNightVMs.Count()); i += 3)
+            @for (int i = 0; i < Model.pastBoardGameNightVMs.Count(); i += 3)
             {
                 <div class="row">
                     @foreach (BoardGameNightViewModel bgn in Model.pastBoardGameNightVMs.Skip(i).Take(3))
@@ -73,7 +68,7 @@
                                     @bgn.DateTime.ToString("dddd, dd MMMM yyyy HH:mm")
                                 </b>
                                 <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">Attendees: @(bgn.Attendees?.Count() ?? 0) / @bgn.MaxAttendees</li>
+                                    <li class="list-group-item">Host: @(bgn.Host?.FirstName) @(bgn.Host?.LastName)</li>
                                     <li class="list-group-item">Board games: @(bgn.BoardGames?.Count() ?? 0)</li>
                                     <li class="list-group-item">City: @bgn.City</li>
                                     <li class="list-group-item">Address: @bgn.Address</li>
@@ -88,7 +83,7 @@
             }
         } else
         {
-            <h4 class="secondary lead"><em>You have not hosted any board game night yet <i class="fa-regular fa-face-frown"></i></em></h4>
+            <h4 class="secondary lead"><em>There are no available board game nights <i class="fa-regular fa-face-frown"></i></em></h4>
         }
     </div>
 </div>

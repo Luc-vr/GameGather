@@ -40,28 +40,6 @@ namespace Web.Controllers
             _foodAndDrinksPrefRepository = foodAndDrinksPrefRepository;
         }
 
-        public IActionResult Hosting()
-        {
-            var successMessage = TempData["SuccessMessage"];
-
-            // Check if there is a temporary success message in TempData
-            if (successMessage is not null)
-            {
-                // Show the success message using TempData
-                _toastNotification.AddSuccessToastMessage(successMessage.ToString());
-            }
-
-            // Get the current user from the database
-            var user = _userRepository.GetUserByEmail(User.Identity!.Name!)!;
-
-            // Get all board game nights hosted by the current user
-            var boardGameNights = _boardGameNightRepository.GetAllHostingBoardGameNightsForUser(user.Id);
-
-            var boardGameNightVMs = _mapper.Map<List<BoardGameNightViewModel>>(boardGameNights);
-
-            return View(boardGameNightVMs);
-        }
-
         public IActionResult Create()
         {
             // Get the current user from the database
@@ -111,8 +89,8 @@ namespace Web.Controllers
             // Set a success message in TempData
             TempData["SuccessMessage"] = "Board game night created successfully!";
 
-            // Redirect to the overview page
-            return RedirectToAction("Overview");
+            // Redirect to the hosting page
+            return RedirectToAction("Hosting");
 
         }
 
@@ -135,6 +113,20 @@ namespace Web.Controllers
 
             boardGameNightVM.IsHost = isHost;
             boardGameNightVM.IsAttending = isAttending;
+
+            // Get the current user from the database
+            var user = _userRepository.GetUserByEmail(User.Identity!.Name!);
+
+            if (user == null)
+            {
+                // If the user is null, go to login page
+                return RedirectToAction("Login", "Account");
+            }
+
+            bool foodAndDrinksWarning = !boardGameNight.FoodAndDrinksPreference!.IsCompatibleWith(user.FoodAndDrinksPreference!);
+
+            // Pass the foodAndDrinksWarning to the view
+            ViewBag.FoodAndDrinksWarning = foodAndDrinksWarning;
 
             // Display success or error message
             var errorMessage = TempData["ErrorMessage"];
@@ -242,10 +234,10 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(BoardGameNightViewModel boardGameNightVM)
+        public IActionResult Delete(int id)
         {
             // Get the board game night from the database
-            var boardGameNight = _boardGameNightRepository.GetBoardGameNightById(boardGameNightVM.Id);
+            var boardGameNight = _boardGameNightRepository.GetBoardGameNightById(id);
 
             // Check if the board game night exists
             if (boardGameNight == null)
@@ -285,5 +277,151 @@ namespace Web.Controllers
             // Redirect back to the overview page
             return RedirectToAction("Hosting");
         }
+
+        [HttpPost]
+        public IActionResult Join(int id)
+        {
+            // Get the board game night from the database
+            var boardGameNight = _boardGameNightRepository.GetBoardGameNightById(id);
+
+            // Check if the board game night exists
+            if (boardGameNight == null)
+            {
+                return NotFound();
+            }
+
+            // Get the current user from the database
+            var user = _userRepository.GetUserByEmail(User.Identity!.Name!);
+
+            if (user == null)
+            {
+                // If the user is null, go to login page
+                return RedirectToAction("Login", "Account");
+            }
+
+            // Check if the board game night is full
+            if (boardGameNight.Attendees!.Count >= boardGameNight.MaxAttendees)
+            {
+                TempData["ErrorMessage"] = "Board game night is already full";
+                return RedirectToAction("Details", new { boardGameNightId = boardGameNight.Id });
+            }
+
+            // Check if the user is 18 or older and the board game night is 18+
+            if (user.Age < 18 && boardGameNight.IsAdultOnly)
+            {
+                TempData["ErrorMessage"] = "This board game night is for adults only";
+                return RedirectToAction("Details", new { boardGameNightId = boardGameNight.Id });
+            }
+
+            _boardGameNightRepository.AttendBoardGameNight(user.Id, boardGameNight.Id);
+
+            TempData["SuccessMessage"] = "You have joined the board game night!";
+            return RedirectToAction("Details", new { boardGameNightId = boardGameNight.Id });
+
+        }
+
+        [HttpPost]
+        public IActionResult Unjoin(int id)
+        {
+            // Get the board game night from the database
+            var boardGameNight = _boardGameNightRepository.GetBoardGameNightById(id);
+
+            // Check if the board game night exists
+            if (boardGameNight == null)
+            {
+                return NotFound();
+            }
+
+            // Get the current user from the database
+            var user = _userRepository.GetUserByEmail(User.Identity!.Name!);
+
+            if (user == null)
+            {
+                // If the user is null, go to login page
+                return RedirectToAction("Login", "Account");
+            }
+
+            _boardGameNightRepository.UnattendBoardGameNight(user.Id, boardGameNight.Id);
+            TempData["SuccessMessage"] = "You have unjoined the board game night!";
+
+            return RedirectToAction("Details", new { boardGameNightId = boardGameNight.Id });
+
+        }
+
+        public IActionResult Hosting()
+        {
+            var successMessage = TempData["SuccessMessage"];
+
+            // Check if there is a temporary success message in TempData
+            if (successMessage is not null)
+            {
+                // Show the success message using TempData
+                _toastNotification.AddSuccessToastMessage(successMessage.ToString());
+            }
+
+            // Get the current user from the database
+            var user = _userRepository.GetUserByEmail(User.Identity!.Name!)!;
+
+            // Get the board game nights that the user is hosting
+            var upcomingBoardGameNights = _boardGameNightRepository.GetAllUpcomingHostingBoardGameNightsForUser(user.Id);
+            var pastBoardGameNights = _boardGameNightRepository.GetAllPastHostingBoardGameNightsForUser(user.Id);
+
+            var upcomingBoardGameNightVMs = _mapper.Map<List<BoardGameNightViewModel>>(upcomingBoardGameNights);
+            var pastBoardGameNightVMs = _mapper.Map<List<BoardGameNightViewModel>>(pastBoardGameNights);
+
+            return View((upcomingBoardGameNightVMs, pastBoardGameNightVMs));
+        }
+
+        public IActionResult Joining()
+        {
+            var successMessage = TempData["SuccessMessage"];
+
+            // Check if there is a temporary success message in TempData
+            if (successMessage is not null)
+            {
+                // Show the success message using TempData
+                _toastNotification.AddSuccessToastMessage(successMessage.ToString());
+            }
+
+            // Get the current user from the database
+            var user = _userRepository.GetUserByEmail(User.Identity!.Name!)!;
+
+            // Get the board game nights that the user has joined or can join
+            var joinedGameNights = _boardGameNightRepository.GetAllAttendingBoardGameNightsForUser(user.Id);
+            var joinableBoardGameNights = _boardGameNightRepository.GetAllJoinableBoardGameNightsForUser(user.Id);
+
+            var joinedGameNightVMs = _mapper.Map<List<BoardGameNightViewModel>>(joinedGameNights);
+            var joinableBoardGameNightVMs = _mapper.Map<List<BoardGameNightViewModel>>(joinableBoardGameNights);
+
+            return View((joinedGameNightVMs, joinableBoardGameNightVMs));
+        }
+
+        public IActionResult AllUpcomingHosting()
+        {
+            // Get the current user from the database
+            var user = _userRepository.GetUserByEmail(User.Identity!.Name!)!;
+
+            // Get all upcoming board game nights hosted by the current user
+            var boardGameNights = _boardGameNightRepository.GetAllUpcomingHostingBoardGameNightsForUser(user.Id);
+
+            var boardGameNightVMs = _mapper.Map<List<BoardGameNightViewModel>>(boardGameNights);
+
+            return View(boardGameNightVMs);
+        }
+
+        public IActionResult AllPastHosting()
+        {
+            // Get the current user from the database
+            var user = _userRepository.GetUserByEmail(User.Identity!.Name!)!;
+
+            // Get all upcoming board game nights hosted by the current user
+            var boardGameNights = _boardGameNightRepository.GetAllPastHostingBoardGameNightsForUser(user.Id);
+
+            var boardGameNightVMs = _mapper.Map<List<BoardGameNightViewModel>>(boardGameNights);
+
+            return View(boardGameNightVMs);
+        }
+
+
     }
 }

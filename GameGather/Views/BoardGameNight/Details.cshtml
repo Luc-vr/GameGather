@@ -36,13 +36,72 @@
                     </a>
                 </span>
                 <span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-bs-placement="bottom" title="Deleting is not allowed after someone has joined">
-                    <a class="btn btn-danger d-flex align-items-center disabled" asp-controller="BoardGameNight" asp-action="Delete" asp-route-boardGameNightId="@Model.Id">
+                    <a class="btn btn-danger d-flex align-items-center disabled" asp-controller="BoardGameNight" asp-action="Delete" asp-route-boardGameNightId="Model.Id">
                         <i class="fa-solid fa-trash-can"></i>
                         <span class="ms-2">Delete</span>
                     </a>
                 </span>
             }
 
+        } else
+        {
+            <a class="btn btn-secondary d-flex align-items-center mx-3" asp-controller="BoardGameNight" asp-action="Joining">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span class="ms-2">Go back</span>
+            </a>
+
+            @if (ViewBag.FoodAndDrinksWarning && !Model.IsAttending)
+            {
+                <button class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#fadpWarningModal">
+                    <i class="fa-solid fa-plus"></i>
+                    <span class="ms-2">Join</span>
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="fadpWarningModal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="fadpWarningModalLabel">Are you sure?</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                The foods/drinks provided by the host are not in line with your dietary preferences. Do you still want to join?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <form asp-controller="BoardGameNight" asp-action="Join" method="post">
+                                    <input type="hidden" asp-for="@Model.Id" />
+                                    <button type="submit" class="btn btn-primary d-flex align-items-center">
+                                        Proceed
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            } else
+            {
+                @if (Model.IsAttending)
+                {
+                    <form asp-controller="BoardGameNight" asp-action="Unjoin" method="post">
+                        <input type="hidden" asp-for="@Model.Id" />
+                        <button type="submit" class="btn btn-danger d-flex align-items-center">
+                            <i class="fa-solid fa-xmark"></i>
+                            <span class="ms-2">Unjoin</span>
+                        </button>
+                    </form>
+                } else
+                {
+                    <form asp-controller="BoardGameNight" asp-action="Join" method="post">
+                        <input type="hidden" asp-for="@Model.Id" />
+                        <button type="submit" class="btn btn-primary d-flex align-items-center">
+                            <i class="fa-solid fa-plus"></i>
+                            <span class="ms-2">Join</span>
+                        </button>
+                    </form>
+                }
+            }
         }
     </div>
 </div>

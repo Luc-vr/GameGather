@@ -50,5 +50,29 @@ namespace Domain.Entities
         public ICollection<BoardGameNight>? HostingBoardGameNights { get; set; }
 
         public ICollection<Review>? Reviews { get; set; }
+
+        // Read-only property to calculate age
+        [NotMapped]
+        public int Age
+        {
+            get
+            {
+                if (BirthDate.HasValue)
+                {
+                    DateTime now = DateTime.UtcNow;
+                    int age = now.Year - BirthDate.Value.Year;
+
+                    // Adjust age if the birthday hasn't occurred yet this year
+                    if (now.Month < BirthDate.Value.Month || (now.Month == BirthDate.Value.Month && now.Day < BirthDate.Value.Day))
+                    {
+                        age--;
+                    }
+
+                    return age;
+                }
+
+                return 0; // BirthDate is not set
+            }
+        }
     }
 }

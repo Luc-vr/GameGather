@@ -24,5 +24,17 @@ namespace Domain.Entities
         [Required]
         public bool Vegetarian { get; set; }
 
+        public bool IsCompatibleWith(FoodAndDrinksPreference otherPreference)
+        {
+            // Check compatibility for each property
+            bool lactoseCompatible = LactoseFree || !otherPreference.LactoseFree;
+            bool nutCompatible = NutFree || !otherPreference.NutFree;
+            bool alcoholCompatible = AlcoholFree || !otherPreference.AlcoholFree;
+            bool vegetarianCompatible = Vegetarian || !otherPreference.Vegetarian;
+
+            // Check if all properties are compatible
+            return lactoseCompatible && nutCompatible && alcoholCompatible && vegetarianCompatible;
+        }
+
     }
 }

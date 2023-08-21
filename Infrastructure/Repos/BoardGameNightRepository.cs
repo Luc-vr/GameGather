@@ -18,9 +18,26 @@ namespace Infrastructure.Repos
             _context = context;
         }
 
-        public void AttendBoardGameNight(int boardGameNightId)
+        public void AttendBoardGameNight(int userId, int boardGameNightId)
         {
-            throw new NotImplementedException();
+            // Add the user to the board game night's attendees
+            var boardGameNight = _context.BoardGameNights
+                .Include(bgn => bgn.Attendees)
+                .FirstOrDefault(bgn => bgn.Id == boardGameNightId);
+
+            if (boardGameNight == null)
+            {
+                throw new ArgumentException("Board game night not found");
+            }
+
+            var user = _context.Users.Find(userId);
+            if (user == null)
+            {
+                  throw new ArgumentException("User not found");
+            }
+
+            boardGameNight.Attendees!.Add(user);
+            _context.SaveChanges();
         }
 
         public void CreateBoardGameNight(BoardGameNight boardGameNight)
@@ -42,9 +59,14 @@ namespace Infrastructure.Repos
             throw new NotImplementedException();
         }
 
-        public ICollection<BoardGameNight> GetAllAttendingBoardGameNightsForUser()
+        public ICollection<BoardGameNight> GetAllAttendingBoardGameNightsForUser(int userId)
         {
-            throw new NotImplementedException();
+            // Get all board game nights where the user is an attendee
+            return _context.BoardGameNights
+                .Include(bgn => bgn.Host)
+                .Include(bgn => bgn.BoardGames)
+                .Where(bgn => bgn.Attendees!.Any(a => a.Id == userId))
+                .ToList();
         }
 
         public ICollection<BoardGameNight> GetAllBoardGameNights()
@@ -67,9 +89,44 @@ namespace Infrastructure.Repos
                 .ToList();
         }
 
+        public ICollection<BoardGameNight> GetAllJoinableBoardGameNightsForUser(int userId)
+        {
+            // Get all board game nights where the user is not the host, the user has not already joined
+            // and the date is in the future sorted by date
+            return _context.BoardGameNights
+                .Include(bgn => bgn.Host)
+                .Include(bgn => bgn.BoardGames)
+                .Where(bgn => bgn.Host!.Id != userId && !bgn.Attendees!.Any(a => a.Id == userId) && bgn.DateTime > DateTime.Now)
+                .OrderBy(bgn => bgn.DateTime)
+                .ToList();
+        }
+
+        public ICollection<BoardGameNight> GetAllPastHostingBoardGameNightsForUser(int userId)
+        {
+            // Get all board game nights where the user is the host and the date is in the past sorted by date where most recent is first
+            return _context.BoardGameNights
+                .Include(bgn => bgn.Attendees)
+                .Include(bgn => bgn.BoardGames)
+                .Where(bgn => bgn.Host!.Id == userId && bgn.DateTime < DateTime.Now)
+                .OrderByDescending(bgn => bgn.DateTime)
+                .ToList();
+
+        }
+
         public ICollection<Review> GetAllReviewsForBoardGameNight(int boardGameNightId)
         {
             throw new NotImplementedException();
+        }
+
+        public ICollection<BoardGameNight> GetAllUpcomingHostingBoardGameNightsForUser(int userId)
+        {
+            // Get all board game nights where the user is the host and the date is in the future sorted by date
+            return _context.BoardGameNights
+                .Include(bgn => bgn.Attendees)
+                .Include(bgn => bgn.BoardGames)
+                .Where(bgn => bgn.Host!.Id == userId && bgn.DateTime > DateTime.Now)
+                .OrderBy(bgn => bgn.DateTime)
+                .ToList();
         }
 
         public BoardGameNight? GetBoardGameNightById(int id)
@@ -89,9 +146,25 @@ namespace Infrastructure.Repos
             throw new NotImplementedException();
         }
 
-        public void UnattendBoardGameNight(int boardGameNightId)
+        public void UnattendBoardGameNight(int userId, int boardGameNightId)
         {
-            throw new NotImplementedException();
+            // Remove the user from the board game night's attendees
+            var boardGameNight = _context.BoardGameNights
+                .Include(bgn => bgn.Attendees)
+                .FirstOrDefault(bgn => bgn.Id == boardGameNightId);
+            if (boardGameNight == null)
+            {
+                throw new ArgumentException("Board game night not found");
+            }
+
+            var user = _context.Users.Find(userId);
+            if (user == null)
+            {
+                throw new ArgumentException("User not found");
+            }
+
+            boardGameNight.Attendees!.Remove(user);
+            _context.SaveChanges();
         }
 
         public void UpdateBoardGameNight(BoardGameNight boardGameNight)

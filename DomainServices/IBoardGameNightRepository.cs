@@ -16,8 +16,17 @@ namespace DomainServices
         // Get all hosting board game nights for a user (US_01)
         ICollection<BoardGameNight> GetAllHostingBoardGameNightsForUser(int userId);
 
+        // Get all upcoming hosting board game nights for a user
+        ICollection<BoardGameNight> GetAllUpcomingHostingBoardGameNightsForUser(int userId);
+
+        // Get all past hosting board game nights for a user
+        ICollection<BoardGameNight> GetAllPastHostingBoardGameNightsForUser(int userId);
+
         // Get all attending board game nights for a user (US_01)
-        ICollection<BoardGameNight> GetAllAttendingBoardGameNightsForUser();
+        ICollection<BoardGameNight> GetAllAttendingBoardGameNightsForUser(int userId);
+
+        // Get all joinable board game nights for a user
+        ICollection<BoardGameNight> GetAllJoinableBoardGameNightsForUser(int userId);
 
         // Create board game night (US_02)
         void CreateBoardGameNight(BoardGameNight boardGameNight);
@@ -29,10 +38,10 @@ namespace DomainServices
         void DeleteBoardGameNight(BoardGameNight boardGameNight);
 
         // Attend board game night (US_04)
-        void AttendBoardGameNight(int boardGameNightId);
+        void AttendBoardGameNight(int userId, int boardGameNightId);
 
         // Unattend board game night (US_04)
-        void UnattendBoardGameNight(int boardGameNightId);
+        void UnattendBoardGameNight(int userId, int boardGameNightId);
 
         // Get all board games for a board game night (US_05)
         ICollection<BoardGame> GetAllBoardGamesForBoardGameNight(int boardGameNightId);

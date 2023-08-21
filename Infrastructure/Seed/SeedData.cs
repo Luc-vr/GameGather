@@ -53,7 +53,7 @@ public class SeedData : ISeedData
             FirstName = "Khalid",
             LastName = "Mimouni",
             Email = "DJK@beats.nl",
-            BirthDate = new DateTime(1990, 1, 1),
+            BirthDate = new DateTime(2011, 1, 1),
             FoodAndDrinksPreferenceId = 1,
             Gender = Domain.Enums.Gender.Other,
             City = "Enschede",
@@ -171,7 +171,7 @@ public class SeedData : ISeedData
             BoardGameNight bgn1 = new()
             {
                 MaxAttendees = 4,
-                DateTime = DateTime.Now.AddDays(1),
+                DateTime = DateTime.Now.AddDays(-1),
                 IsAdultOnly = false,
                 City = "Zwijndrecht",
                 Address = "Koninginneweg 12",
@@ -182,7 +182,7 @@ public class SeedData : ISeedData
             BoardGameNight bgn2 = new()
             {
                 MaxAttendees = 15,
-                DateTime = DateTime.Now.AddDays(2),
+                DateTime = DateTime.Now.AddDays(-2),
                 IsAdultOnly = false,
                 City = "Breda",
                 Address = "Dorpstraat 45",
@@ -193,7 +193,7 @@ public class SeedData : ISeedData
             BoardGameNight bgn3 = new()
             {
                 MaxAttendees = 8,
-                DateTime = DateTime.Now.AddDays(3),
+                DateTime = DateTime.Now.AddDays(-3),
                 IsAdultOnly = true,
                 City = "Rotterdam",
                 Address = "Stadhuisplein 1",
@@ -204,19 +204,19 @@ public class SeedData : ISeedData
             BoardGameNight bgn4 = new()
             {
                 MaxAttendees = 6,
-                DateTime = DateTime.Now.AddDays(4),
+                DateTime = DateTime.Now.AddDays(-4),
                 IsAdultOnly = false,
                 City = "Amsterdam",
                 Address = "Damrak 1",
                 FoodAndDrinksPreferenceId = 8,
-                HostId = user2.Id
+                HostId = user1.Id
             };
 
             BoardGameNight bgn5 = new()
             {
                 MaxAttendees = 10,
                 DateTime = DateTime.Now.AddDays(5),
-                IsAdultOnly = false,
+                IsAdultOnly = true,
                 City = "Utrecht",
                 Address = "Domplein 29",
                 FoodAndDrinksPreferenceId = 9,
