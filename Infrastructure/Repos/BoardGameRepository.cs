@@ -20,12 +20,24 @@ namespace Infrastructure.Repos
 
         public ICollection<BoardGame> GetAllBoardGames()
         {
-            throw new NotImplementedException();
+            // Get all board games
+            return _context.BoardGames.ToList();
         }
 
-        public BoardGame GetBoardGameById(int id)
+        public ICollection<BoardGame> GetAllBoardGamesNotInList(ICollection<BoardGame> boardGames)
         {
-            throw new NotImplementedException();
+            // Get all board games that are not in the list
+            return _context.BoardGames
+                .Where(bg => !boardGames.Contains(bg))
+                .ToList();
+        }
+
+        public BoardGame? GetBoardGameById(int id)
+        {
+            // Get board game by id
+            return _context.BoardGames
+                .Include(bg => bg.BoardGameNights)
+                .FirstOrDefault(bg => bg.Id == id);
         }
     }
 }

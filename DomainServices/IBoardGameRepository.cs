@@ -8,6 +8,9 @@ namespace DomainServices
         ICollection<BoardGame> GetAllBoardGames();
 
         // Get board game by id
-        BoardGame GetBoardGameById(int id);
+        BoardGame? GetBoardGameById(int id);
+
+
+        ICollection<BoardGame> GetAllBoardGamesNotInList(ICollection<BoardGame> boardGames);
     }
 }

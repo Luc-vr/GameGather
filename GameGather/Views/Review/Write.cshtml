@@ -1,0 +1,91 @@
+﻿@model ReviewViewModel
+@{
+    ViewBag.Title = "Write a review";
+}
+<div class="row justify-content-center mt-5">
+    <div class="col-lg-5">
+        <div class="row justify-content-center mx-0">
+            <div class="col-md-10">
+                <div class="mb-4">
+                    <h3>@ViewBag.Title</h3>
+                    <p class="mb-4">
+                        Below you can write a review for the board game night you attended.
+                        The host will be able to see your review including your name.
+                        After submitting, you can not change your review.
+                    </p>
+                </div>
+                <form asp-controller="Review" asp-action="Write" method="post">
+                    <input type="hidden" asp-for="@Model.UserId" />
+                    <input type="hidden" asp-for="@Model.BoardGameNightId" />
+
+                    <div class="form-group mb-2">
+                        <label asp-for="@Model.Score"></label>
+                        <div class="rating">
+                            <input type="radio" asp-for="@Model.Score" class="form-control visually-hidden rating__input" value="5" id="star5" />
+                            <label class="rating__icon" for="star5">
+                                <i class="fa fa-star"></i>
+                            </label>
+                            <input type="radio" asp-for="@Model.Score" class="form-control visually-hidden rating__input" value="4" id="star4" />
+                            <label class="rating__icon" for="star4">
+                                <i class="fa fa-star"></i>
+                            </label>
+                            <input type="radio" asp-for="@Model.Score" class="form-control visually-hidden rating__input" value="3" id="star3" />
+                            <label class="rating__icon" for="star3">
+                                <i class="fa fa-star"></i>
+                            </label>
+                            <input type="radio" asp-for="@Model.Score" class="form-control visually-hidden rating__input" value="2" id="star2" />
+                            <label class="rating__icon" for="star2">
+                                <i class="fa fa-star"></i>
+                            </label>
+                            <input type="radio" asp-for="@Model.Score" class="form-control visually-hidden rating__input" value="1" id="star1" />
+                            <label class="rating__icon" for="star1">
+                                <i class="fa fa-star"></i>
+                            </label>
+
+                            <span asp-validation-for="@Model.Score" class="validation-error"></span>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group mb-2">
+                        <label asp-for="@Model.Text"></label>
+                        <textarea asp-for="@Model.Text" class="form-control"></textarea>
+                        <span asp-validation-for="@Model.Text" class="validation-error"></span>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <button class="btn btn-block btn-primary px-3" type="submit">Save review</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <img src="/images/review-illustration.svg" alt="Review image" class="img-fluid">
+
+    </div>
+</div>
+<script>
+    const ratingInputs = document.querySelectorAll('.rating__input');
+    console.log(ratingInputs);
+
+    ratingInputs.forEach(input => {
+        input.addEventListener('click', function () {
+            const selectedValue = this.value;
+            console.log("Selected value: " + selectedValue);
+            ratingInputs.forEach(input => {
+                const label = input.nextElementSibling;
+                console.log(label);
+
+                if (input.value <= selectedValue) {
+                    label.style.color = 'gold';
+                } else {
+                    label.style.color = '';
+                }
+            });
+        });
+    });
+
+</script>

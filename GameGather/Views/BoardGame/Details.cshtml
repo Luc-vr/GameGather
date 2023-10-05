@@ -1,0 +1,24 @@
+﻿@model BoardGameViewModel
+
+<div class="row justify-content-center my-4">
+    <div class="col-md-4">
+        <div class="card">
+            <h2 class="card-header">
+                @(Model.Name)
+            </h2>
+            <div class="card-body">
+                <p class="card-text">@(Model.Description!)</p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Genre: @Model.Genre</li>
+                <li class="list-group-item"> Adult only: @(Model.IsAdultOnly ? "Yes" : "No")</li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-4">
+        @if (Model.Image is not null)
+        {
+            <img src="data:image/jpeg;base64,@Model.ImageBase64" class="img-fluid" alt="Board Game Image" />
+        }
+    </div>
+</div>

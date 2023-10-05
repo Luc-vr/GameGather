@@ -49,7 +49,16 @@
                             </ul>
                         </li>
                         <li class="nav-item @IsLinkActive("BoardGame")">
-                            <a class="nav-link text-white" asp-controller="Home" asp-action="BoardGames">Board games</a>
+                            <a class="nav-link text-white" asp-controller="BoardGame" asp-action="Index">Board games</a>
+                        </li>
+                        <li class="nav-item dropdown @IsLinkActive("Review")">
+                            <a class="nav-link text-white dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Reviews
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" asp-controller="Review" asp-action="Overview"><i class="fa-regular fa-star"></i>  Received reviews</a></li>
+                                <li><a class="dropdown-item" asp-controller="Review" asp-action="UnreviewedBGN"><i class="fa-solid fa-pencil"></i>  Write review</a></li>
+                            </ul>
                         </li>
                         <li class="nav-item dropdown @IsLinkActive("Account")">
                             <a class="nav-link text-white dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

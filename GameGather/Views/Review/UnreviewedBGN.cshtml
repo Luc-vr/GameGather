@@ -1,21 +1,17 @@
 ﻿@model IEnumerable<BoardGameNightViewModel>
 @{
-    ViewData["Title"] = "All hosting board game nights";
+    ViewData["Title"] = "Choose a board game night to review";
 }
 
 <div class="row justify-content-center">
     <div class="col-lg-10">
         <div class="row my-4">
             <div class="col-sm-10">
-                <h4 class="secondary">All of your upcoming board game nights as host</h4>
-            </div>
-            <div class="col-sm-2 d-flex justify-content-end">
-                <a class="btn btn-secondary d-flex align-items-center px-3 py-2" asp-controller="BoardGameNight" asp-action="Hosting"><i class="fa-solid fa-arrow-left"></i> <span class="ms-2">Go back</span></a>
+                <h4 class="secondary">Choose a board game night to review</h4>
             </div>
         </div>
         @if (Model.Count() > 0)
         {
-
             @for (int i = 0; i < Model.Count(); i += 3)
             {
                 <div class="row">
@@ -27,13 +23,13 @@
                                     @bgn.DateTime.ToString("dddd, dd MMMM yyyy HH:mm")
                                 </b>
                                 <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">Attendees: @(bgn.Attendees?.Count() ?? 0) / @bgn.MaxAttendees</li>
+                                    <li class="list-group-item">Host: @(bgn.Host?.FirstName) @(bgn.Host?.LastName)</li>
                                     <li class="list-group-item">Board games: @(bgn.BoardGames?.Count() ?? 0)</li>
                                     <li class="list-group-item">City: @bgn.City</li>
                                     <li class="list-group-item">Address: @bgn.Address</li>
                                 </ul>
                                 <div class="card-footer">
-                                    <a class="btn btn-primary px-3" asp-controller="BoardGameNight" asp-action="Details" asp-route-boardGameNightId="@bgn.Id">Details</a>
+                                    <a class="btn btn-primary px-3" asp-controller="Review" asp-action="Write" asp-route-boardGameNightId="@bgn.Id">Write review</a>
                                 </div>
                             </div>
                         </div>
@@ -42,7 +38,7 @@
             }
         } else
         {
-            <h4 class="secondary lead"><em>You are not hosting any board game nights <i class="fa-regular fa-face-frown"></i></em></h4>
+            <h4 class="secondary lead"><em>You have no board game nights to review... </em></h4>
         }
     </div>
 </div>

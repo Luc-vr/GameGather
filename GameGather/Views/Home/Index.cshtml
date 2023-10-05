@@ -2,7 +2,119 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<main>
+    <div class="row justify-content-center d-flex">
+        <div class="col-10">
+
+            <div class="text-center mb-4">
+                <h1 class="display-4">
+                    Welcome to <b class="text-primary">Game</b> <b class="text-secondary">Gather</b>
+                </h1>
+            </div>
+
+            <div class="row justify-content-center d-flex">
+                <div class="col-10">
+                    <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-indicators">
+                            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                        </div>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="/images/adults-playing-cards.jpg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+
+                                <div class="container">
+                                    <div class="carousel-caption">
+                                        <h1>Meet new people</h1>
+                                        <p>
+                                            Meet new people and play board games together. You can also host your own board game night and invite others to join.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <img src="/images/board-game.jpg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+
+                                <div class="container">
+                                    <div class="carousel-caption">
+                                        <h1>Discover new board games</h1>
+                                        <p>
+                                            Join board game nights and discover new board games. Maybe you will find your new favorite board game!
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <img src="/images/friend-group.jpeg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+
+                                <div class="container">
+                                    <div class="carousel-caption">
+                                        <h1>Create friends</h1>
+                                        <p>
+                                            The best way to create friends is to play games together. Join board game nights and meet new people!
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- START THE FEATURETTES -->
+
+            <hr class="featurette-divider">
+
+            <div class="row featurette">
+                <div class="col-md-7">
+                    <h2 class="featurette-heading">Host your own board game nights</h2>
+                    <p class="lead mt-4">On Game Gather you can host your own board game nights. Just fill in a place, date and you're ready to start inviting people!</p>
+                </div>
+                <div class="col-md-5">
+                    <img class="featurette-image img-fluid mx-auto" width="500" height="500" src="images/schedule-illustration.svg" role="img" preserveAspectRatio="xMidYMid slice" focusable="false">
+                </div>
+            </div>
+
+            <hr class="featurette-divider">
+
+            <div class="row featurette">
+                <div class="col-md-7 order-md-2">
+                    <h2 class="featurette-heading">Fill in your preferences</h2>
+                    <p class="lead mt-4">Make sure to set your preferences for foods and drinks, ensuring you will receive a notification when joining a board game night that doesn't align with your tastes.</p>
+                </div>
+                <div class="col-md-5 order-md-1">
+                    <img class="featurette-image img-fluid mx-auto" width="500" height="500" src="images/preferences-illustration.svg" role="img" preserveAspectRatio="xMidYMid slice" focusable="false">
+                </div>
+            </div>
+
+            <hr class="featurette-divider">
+
+            <div class="row featurette">
+                <div class="col-md-7">
+                    <h2 class="featurette-heading">Write reviews</h2>
+                    <p class="lead mt-4">After attending a delightful board game night, don't forget to show your appreciation by leaving a review for the host. Your feedback adds to the warmth of our community, making future board game nights even better.</p>
+                </div>
+                <div class="col-md-5">
+                    <img class="featurette-image img-fluid mx-auto" width="500" height="500" src="images/review-illustration.svg" role="img" preserveAspectRatio="xMidYMid slice" focusable="false">
+                </div>
+            </div>
+
+            <hr class="featurette-divider">
+
+            <!-- /END THE FEATURETTES -->
+            <!-- FOOTER -->
+            <footer class="container">
+                <p class="float-end"><a href="#">Back to top</a></p>
+                <p>&copy; 2023 Luc van Roon</p>
+            </footer>
+        </div>
+    </div>
+</main>

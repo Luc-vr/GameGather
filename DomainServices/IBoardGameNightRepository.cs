@@ -51,5 +51,11 @@ namespace DomainServices
 
         // Get all reviews for a board game night (US_08)
         ICollection<Review> GetAllReviewsForBoardGameNight(int boardGameNightId);
+
+        void AddBoardGameToBoardGameNight(int boardGameNightId, int boardGameId);
+
+        void RemoveBoardGameFromBoardGameNight(int boardGameNightId, int boardGameId);
+
+        ICollection<BoardGameNight> GetBoardGameNightsWithoutUserReview(int userId);
     }
 }

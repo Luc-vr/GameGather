@@ -36,7 +36,7 @@ namespace Web.Models
 
         public EventPreferencesViewModel? FoodAndDrinksPreference { get; set; }
 
-        public ICollection<BoardGame>? BoardGames { get; set; }
+        public ICollection<BoardGameViewModel>? BoardGames { get; set; }
 
         public ICollection<User>? Attendees { get; set; }
 

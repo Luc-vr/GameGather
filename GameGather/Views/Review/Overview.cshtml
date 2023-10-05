@@ -1,0 +1,58 @@
+﻿@model ReviewOverviewViewModel
+@{
+    ViewData["Title"] = "Reviews";
+}
+<div class="row justify-content-center mt-4">
+    <div class="col-sm-8">
+        <div class="row justify-content-center mt-4">
+            <h4 class="secondary">Your review statistics</h4>
+        </div>
+            @if (@Model.Reviews != null && @Model.Reviews.Count() > 0)
+            {
+            <div class="col-6 pe-3">
+                <div class="card mb-3">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"> Average score: @Model.AverageScore</li>
+                        <li class="list-group-item"> Amount of hosted board game night: @Model.NumberOfHostedBoardGameNights</li>
+                        <li class="list-group-item"> Amount of received reviews: @Model.Reviews.Count()</li>
+                    </ul>
+                </div>
+            </div>
+            } else
+            {
+                <h4 class="secondary lead"><em>You didn't receive any reviews yet, come back later!</em></h4>
+            }
+
+        @if (@Model.Reviews != null && @Model.Reviews.Count() > 0)
+        {
+            <div class="row justify-content-center mt-4">
+                <h4 class="secondary">Received reviews</h4>
+            </div>
+            <div class="row justify-content-start">
+                @for (int i = 0; i < Model.Reviews.Count(); i += 2)
+                {
+                        @foreach (ReviewViewModel rvm in Model.Reviews.Skip(i).Take(2))
+                        {
+                            <div class="col-md-6 pr-0">
+                                <div class="card mb-2">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            Rating:
+                                            @for (int j = 1; j <= 5; j++)
+                                            {
+                                                <i class="fas fa-star @(j <= rvm.Score ? "text-warning" : "")"></i>
+                                            }
+                                        </li>
+                                        <li class="list-group-item"> @rvm.Text</li>
+                                        <li class="list-group-item"> Game night: <a class="btn btn-link" asp-controller="BoardGameNight" asp-action="Details" asp-route-boardGameNightId="@rvm.BoardGameNight!.Id">@rvm.BoardGameNight!.DateTime.ToShortDateString()</a></li>
+                                        <li class="list-group-item"> By @rvm.User!.FirstName @rvm.User!.LastName</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        }
+                }
+            </div>
+        }
+    </div>
+</div>
+

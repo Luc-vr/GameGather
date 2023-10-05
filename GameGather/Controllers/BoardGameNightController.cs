@@ -13,7 +13,6 @@ namespace Web.Controllers
 {
     public class BoardGameNightController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
         private readonly IMapper _mapper;
         private readonly IToastNotification _toastNotification;
         private readonly IUserRepository _userRepository;
@@ -22,7 +21,6 @@ namespace Web.Controllers
         private readonly IFoodAndDrinksPrefRepository _foodAndDrinksPrefRepository;
 
         public BoardGameNightController(
-            UserManager<IdentityUser> userManager,
             IMapper mapper,
             IToastNotification toastNotification,
             IUserRepository userRepository,
@@ -31,7 +29,6 @@ namespace Web.Controllers
             IFoodAndDrinksPrefRepository foodAndDrinksPrefRepository
             )
         {
-            _userManager = userManager;
             _mapper = mapper;
             _toastNotification = toastNotification;
             _userRepository = userRepository;
@@ -113,6 +110,9 @@ namespace Web.Controllers
 
             boardGameNightVM.IsHost = isHost;
             boardGameNightVM.IsAttending = isAttending;
+
+            // Map each board game to a BoardGameViewModel
+            boardGameNightVM.BoardGames = _mapper.Map<BoardGameViewModel[]>(boardGameNight.BoardGames);
 
             // Get the current user from the database
             var user = _userRepository.GetUserByEmail(User.Identity!.Name!);
@@ -215,6 +215,7 @@ namespace Web.Controllers
             }
 
             var host = boardGameNight.Host;
+            var boardGames = boardGameNight.BoardGames;
 
             // Map the new values to the board game night
             boardGameNight = _mapper.Map(boardGameNightVM, boardGameNight);
@@ -222,6 +223,9 @@ namespace Web.Controllers
             // Set the host to the original host
             boardGameNight.Host = host;
             boardGameNight.HostId = host.Id;
+
+            // Set the board games to the original board games
+            boardGameNight.BoardGames = boardGames;
 
             // Update the board game night in the database
             _boardGameNightRepository.UpdateBoardGameNight(boardGameNight);
@@ -422,6 +426,122 @@ namespace Web.Controllers
             return View(boardGameNightVMs);
         }
 
+        public IActionResult EditBoardGames(int boardGameNightId)
+        {
+            // Check if the signed in user is the host of the board game night
+            var user = _userRepository.GetUserByEmail(User.Identity!.Name!);
+            var boardGameNight = _boardGameNightRepository.GetBoardGameNightById(boardGameNightId);
+
+            // If the board game night does not exist, return NotFound
+            if (boardGameNight == null)
+            {
+                return NotFound();
+            }
+
+            // If the user is not the host of the board game night, return Unauthorized
+            if (user == null || user.Id != boardGameNight.HostId)
+            {
+                return Unauthorized();
+            }
+
+            // Check if the board game night exists
+            if (boardGameNight.BoardGames == null)
+            {
+                boardGameNight.BoardGames = new List<BoardGame>();
+            }
+            
+            // Get a list of board games that are not already added to the board game night
+            var notSelectedBoardGames = _boardGameRepository.GetAllBoardGamesNotInList(boardGameNight.BoardGames);
+
+            var notSelectedBoardGameVMs = _mapper.Map<List<BoardGameViewModel>>(notSelectedBoardGames);
+            var selectedBoardGameVMs = _mapper.Map<List<BoardGameViewModel>>(boardGameNight.BoardGames);
+
+            // Display success or error message
+            var errorMessage = TempData["ErrorMessage"];
+            var successMessage = TempData["SuccessMessage"];
+
+            if (errorMessage is not null)
+            {
+                _toastNotification.AddErrorToastMessage(errorMessage.ToString());
+            } else if (successMessage is not null)
+            {
+                _toastNotification.AddSuccessToastMessage(successMessage.ToString());
+            }
+
+            return View((boardGameNightId, selectedBoardGameVMs, notSelectedBoardGameVMs));
+        }
+
+        [HttpPost]
+        public IActionResult AddBoardGame(int boardGameNightId, int boardGameId)
+        {
+            // Check if the signed in user is the host of the board game night
+            var user = _userRepository.GetUserByEmail(User.Identity!.Name!);
+            var boardGameNight = _boardGameNightRepository.GetBoardGameNightById(boardGameNightId);
+
+            // If the board game night does not exist, return NotFound
+            if (boardGameNight == null)
+            {
+                return NotFound();
+            }
+
+            // If the user is not the host of the board game night, return Unauthorized
+            if (user == null || user.Id != boardGameNight.HostId)
+            {
+                return NotFound();
+            }
+
+            // Check if the board game night exists
+            boardGameNight.BoardGames ??= new List<BoardGame>();
+
+            // Check if the board game is already added to the board game night
+            if (boardGameNight.BoardGames.Any(bg => bg.Id == boardGameId))
+            {
+                TempData["ErrorMessage"] = "This board game is already added to the board game night";
+                return RedirectToAction("EditBoardGames", new { boardGameNightId = boardGameNight.Id });
+            }
+
+            // Add the board game to the board game night
+            _boardGameNightRepository.AddBoardGameToBoardGameNight(boardGameNight.Id, boardGameId);
+
+            TempData["SuccessMessage"] = "Board game added to the board game night";
+            return RedirectToAction("EditBoardGames", new { boardGameNightId = boardGameNight.Id });
+        }
+
+        [HttpPost]
+        public IActionResult RemoveBoardGame(int boardGameId, int boardGameNightId)
+        {
+            // Check if the signed in user is the host of the board game night
+            var user = _userRepository.GetUserByEmail(User.Identity!.Name!);
+            var boardGameNight = _boardGameNightRepository.GetBoardGameNightById(boardGameNightId);
+
+            // If the board game night does not exist, return NotFound
+            if (boardGameNight == null)
+            {
+                return NotFound();
+            }
+
+            // If the user is not the host of the board game night, return Unauthorized
+            if (user == null || user.Id != boardGameNight.HostId)
+            {
+                return Unauthorized();
+            }
+
+            // Check if the board game night exists
+            boardGameNight.BoardGames ??= new List<BoardGame>();
+
+            // Check if the board game is already added to the board game night
+            if (!boardGameNight.BoardGames.Any(bg => bg.Id == boardGameId))
+            {
+                TempData["ErrorMessage"] = "This board game removed from the board game night";
+                return RedirectToAction("EditBoardGames", new { boardGameNightId = boardGameNight.Id });
+            }
+
+            // Remove the board game from the board game night
+            _boardGameNightRepository.RemoveBoardGameFromBoardGameNight(boardGameNight.Id, boardGameId);
+
+            TempData["SuccessMessage"] = "Board game removed from the board game night";
+            return RedirectToAction("EditBoardGames", new { boardGameNightId = boardGameNight.Id });
+        }
 
     }
 }

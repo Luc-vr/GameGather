@@ -33,7 +33,7 @@ namespace Infrastructure.Repos
             var user = _context.Users.Find(userId);
             if (user == null)
             {
-                  throw new ArgumentException("User not found");
+                throw new ArgumentException("User not found");
             }
 
             boardGameNight.Attendees!.Add(user);
@@ -172,6 +172,65 @@ namespace Infrastructure.Repos
             // Update the board game night in the database
             _context.BoardGameNights.Update(boardGameNight);
             _context.SaveChanges();
+        }
+
+        public void AddBoardGameToBoardGameNight(int boardGameNightId, int boardGameId)
+        {
+            // Add the board game to the board game night's board games
+            var boardGameNight = _context.BoardGameNights
+                .Include(bgn => bgn.BoardGames)
+                .FirstOrDefault(bgn => bgn.Id == boardGameNightId);
+            if (boardGameNight == null)
+            {
+                throw new ArgumentException("Board game night not found");
+            }
+
+            var boardGame = _context.BoardGames.Find(boardGameId);
+            if (boardGame == null)
+            {
+                throw new ArgumentException("Board game not found");
+            }
+
+            boardGameNight.BoardGames!.Add(boardGame);
+            _context.SaveChanges();
+        }
+
+        public void RemoveBoardGameFromBoardGameNight(int boardGameNightId, int boardGameId)
+        {
+            // Remove the board game from the board game night's board games
+            var boardGameNight = _context.BoardGameNights
+                .Include(bgn => bgn.BoardGames)
+                .FirstOrDefault(bgn => bgn.Id == boardGameNightId);
+            if (boardGameNight == null)
+            {
+                throw new ArgumentException("Board game night not found");
+            }
+
+            var boardGame = _context.BoardGames.Find(boardGameId);
+            if (boardGame == null)
+            {
+                throw new ArgumentException("Board game not found");
+            }
+
+            boardGameNight.BoardGames!.Remove(boardGame);
+            _context.SaveChanges();
+        }
+
+        public ICollection<BoardGameNight> GetBoardGameNightsWithoutUserReview(int userId)
+        {
+            // Get all board game night where the user has attended but not written a review for
+            var boardGameNights = _context.BoardGameNights
+                .Include(bgn => bgn.Attendees)
+                .Include(bgn => bgn.Reviews)
+                .Include(bgn => bgn.Host)
+                .Where(
+                    bgn => bgn.Attendees!.Any(a => a.Id == userId) &&
+                    !bgn.Reviews!.Any(r => r.User!.Id == userId) &&
+                    bgn.DateTime < DateTime.Now
+                 )
+                .ToList();
+
+            return boardGameNights;
         }
     }
 }
