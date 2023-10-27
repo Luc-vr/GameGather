@@ -389,7 +389,7 @@ namespace Web.Controllers
 
             // Get the current user from the database
             var user = _userRepository.GetUserByEmail(User.Identity!.Name!)!;
-
+            
             // Get the board game nights that the user has joined or can join
             var joinedGameNights = _boardGameNightRepository.GetAllAttendingBoardGameNightsForUser(user.Id);
             var joinableBoardGameNights = _boardGameNightRepository.GetAllJoinableBoardGameNightsForUser(user.Id);

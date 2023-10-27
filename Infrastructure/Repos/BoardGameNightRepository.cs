@@ -54,6 +54,11 @@ namespace Infrastructure.Repos
             _context.SaveChanges();
         }
 
+        public ICollection<User> GetAllAttendeesForBoardGameNight(int boardGameNightId)
+        {
+            throw new NotImplementedException();
+        }
+
         public ICollection<BoardGameNight> GetAllAttendingBoardGameNightsForUser(int userId)
         {
             // Get all board game nights where the user is an attendee
@@ -61,6 +66,26 @@ namespace Infrastructure.Repos
                 .Include(bgn => bgn.Host)
                 .Include(bgn => bgn.BoardGames)
                 .Where(bgn => bgn.Attendees!.Any(a => a.Id == userId))
+                .ToList();
+        }
+
+        public ICollection<BoardGameNight> GetAllBoardGameNights()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICollection<BoardGame> GetAllBoardGamesForBoardGameNight(int boardGameNightId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICollection<BoardGameNight> GetAllHostingBoardGameNightsForUser(int userId)
+        {
+            // Get all board game nights where the user is the host
+            return _context.BoardGameNights
+                .Include(bgn => bgn.Attendees)
+                .Include(bgn => bgn.BoardGames)
+                .Where(bgn => bgn.Host!.Id == userId)
                 .ToList();
         }
 
@@ -114,6 +139,11 @@ namespace Infrastructure.Repos
                 .Include(bgn => bgn.Reviews)
                 .Include(bgn => bgn.FoodAndDrinksPreference)
                 .FirstOrDefault(bgn => bgn.Id == id);
+        }
+
+        public FoodAndDrinksPreference GetFoodAndDrinksPreferenceForBoardGameNight(int boardGameNightId)
+        {
+            throw new NotImplementedException();
         }
 
         public void UnattendBoardGameNight(int userId, int boardGameNightId)

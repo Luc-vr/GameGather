@@ -1,5 +1,7 @@
 ﻿using Domain.Enums;
+using HotChocolate;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Domain.Entities
 {
@@ -24,6 +26,7 @@ namespace Domain.Entities
         [Required]
         public bool IsAdultOnly { get; set; }
 
+        [GraphQLIgnore]
         public byte[]? Image { get; set; }
 
         public ICollection<BoardGameNight>? BoardGameNights { get; set; }

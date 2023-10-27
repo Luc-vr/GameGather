@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Domain.Entities
 {
@@ -37,10 +38,12 @@ namespace Domain.Entities
         public User? Host { get; set; }
 
         [InverseProperty(nameof(User.AttendingBoardGameNights))]
+        [JsonIgnore]
         public ICollection<User>? Attendees { get; set; }
 
         public ICollection<BoardGame>? BoardGames { get; set; }
 
+        [JsonIgnore]
         public ICollection<Review>? Reviews { get; set; }
     }
 }

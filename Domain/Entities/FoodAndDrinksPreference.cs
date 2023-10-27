@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HotChocolate;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace Domain.Entities
     public class FoodAndDrinksPreference
     {
         [Key]
+        [GraphQLIgnore]
         public int Id { get; set; }
 
         [Required]
@@ -24,6 +26,7 @@ namespace Domain.Entities
         [Required]
         public bool Vegetarian { get; set; }
 
+        [GraphQLIgnore]
         public bool IsCompatibleWith(FoodAndDrinksPreference otherPreference)
         {
             // Check compatibility for each property

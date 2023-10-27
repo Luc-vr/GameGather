@@ -53,7 +53,7 @@ public class SeedData : ISeedData
             FirstName = "Khalid",
             LastName = "Mimouni",
             Email = "DJK@beats.nl",
-            BirthDate = new DateTime(2011, 1, 1),
+            BirthDate = new DateTime(2007, 1, 1),
             FoodAndDrinksPreferenceId = 1,
             Gender = Domain.Enums.Gender.Other,
             City = "Enschede",
