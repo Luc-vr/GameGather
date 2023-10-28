@@ -19,7 +19,7 @@
                     <i class="fa-solid fa-wrench"></i>
                     <span class="ms-2">Edit</span>
                 </a>
-                
+
                 <button class="btn btn-danger d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#fadpWarningModal">
                     <i class="fa-solid fa-trash-can"></i>
                     <span class="ms-2">Delete</span>
@@ -149,7 +149,15 @@
             </b>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item"> Name: @Model.Host!.FirstName @Model.Host!.LastName</li>
-                <li class="list-group-item"> Age: @Model.Host!.Age</li>
+                @if (Model.ReviewStats!.AverageScore == 0)
+                {
+                    <li class="list-group-item"> Average score: No reviews yet</li>
+                } else
+                {
+                    <li class="list-group-item"> Average score: @Model.ReviewStats!.AverageScore</li>
+                }
+                <li class="list-group-item"> Amount of hosted board game night: @Model.ReviewStats!.NumberOfHostedBoardGameNights</li>
+                <li class="list-group-item"> Amount of received reviews: @Model.ReviewStats!.Reviews!.Count()</li>
             </ul>
         </div>
         <div class="card mb-3">
@@ -195,7 +203,7 @@
                 </li>
             </ul>
         </div>
-       
+
     </div>
 </div>
 <div class="row justify-content-center mt-4">
@@ -206,7 +214,7 @@
         @if (Model.IsHost)
         {
             @if (Model.Attendees!.Count() < 1 && DateTime.Now < Model.DateTime)
-           {
+            {
                 <a class="btn btn-warning px-3" asp-controller="BoardGameNight" asp-action="EditBoardGames" asp-route-boardGameNightId="@Model.Id"><i class="fa-solid fa-pen-to-square"></i> Add / remove board games</a>
             } else
             {

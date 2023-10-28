@@ -27,10 +27,10 @@ namespace Web.Controllers
             return View(boardGameViewModels);
         }
 
-        public IActionResult Details(int boardGameNightId)
+        public IActionResult Details(int boardGameId)
         {
             // Get board game by boardGameNightId
-            var boardGame = _boardGameRepository.GetBoardGameById(boardGameNightId);
+            var boardGame = _boardGameRepository.GetBoardGameById(boardGameId);
 
             // Map board game to view model
             var boardGameViewModel = _mapper.Map<BoardGameViewModel>(boardGame);

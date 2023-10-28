@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Domain.Entities;
 using DomainServices;
+using Infrastructure.Repos;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
@@ -19,6 +20,7 @@ namespace Web.Controllers
         private readonly IBoardGameNightRepository _boardGameNightRepository;
         private readonly IBoardGameRepository _boardGameRepository;
         private readonly IFoodAndDrinksPrefRepository _foodAndDrinksPrefRepository;
+        private readonly IReviewRepository _reviewRepository;
 
         public BoardGameNightController(
             IMapper mapper,
@@ -26,7 +28,8 @@ namespace Web.Controllers
             IUserRepository userRepository,
             IBoardGameNightRepository boardGameNightRepository,
             IBoardGameRepository boardGameRepository,
-            IFoodAndDrinksPrefRepository foodAndDrinksPrefRepository
+            IFoodAndDrinksPrefRepository foodAndDrinksPrefRepository,
+            IReviewRepository reviewRepository
             )
         {
             _mapper = mapper;
@@ -35,6 +38,7 @@ namespace Web.Controllers
             _boardGameNightRepository = boardGameNightRepository;
             _boardGameRepository = boardGameRepository;
             _foodAndDrinksPrefRepository = foodAndDrinksPrefRepository;
+            _reviewRepository = reviewRepository;
         }
 
         public IActionResult Create()
@@ -93,6 +97,15 @@ namespace Web.Controllers
 
         public IActionResult Details(int boardGameNightId)
         {
+            // Get the current user from the database
+            var user = _userRepository.GetUserByEmail(User.Identity!.Name!);
+
+            if (user == null)
+            {
+                // If the user is null, go to login page
+                return RedirectToAction("Login", "Account");
+            }
+
             // Get the board game night from the database
             var boardGameNight = _boardGameNightRepository.GetBoardGameNightById(boardGameNightId);
 
@@ -114,14 +127,21 @@ namespace Web.Controllers
             // Map each board game to a BoardGameViewModel
             boardGameNightVM.BoardGames = _mapper.Map<BoardGameViewModel[]>(boardGameNight.BoardGames);
 
-            // Get the current user from the database
-            var user = _userRepository.GetUserByEmail(User.Identity!.Name!);
+            var reviews = _reviewRepository.GetReviewsForBoardGameNightsHostedByUser(user.Id);
 
-            if (user == null)
+            // Get the amount of board game nights hosted by the user
+            var boardGameNightsHostedByUser = _boardGameNightRepository.GetAllPastHostingBoardGameNightsForUser(user.Id);
+
+            // Map the reviews to the view model
+            var reviewVMs = _mapper.Map<IEnumerable<ReviewViewModel>>(reviews);
+
+            var reviewOverviewVM = new ReviewOverviewViewModel
             {
-                // If the user is null, go to login page
-                return RedirectToAction("Login", "Account");
-            }
+                Reviews = reviewVMs,
+                NumberOfHostedBoardGameNights = boardGameNightsHostedByUser.Count
+            };
+
+            boardGameNightVM.ReviewStats = reviewOverviewVM;
 
             bool foodAndDrinksWarning = !boardGameNight.FoodAndDrinksPreference!.IsCompatibleWith(user.FoodAndDrinksPreference!);
 
@@ -317,6 +337,13 @@ namespace Web.Controllers
                 return RedirectToAction("Details", new { boardGameNightId = boardGameNight.Id });
             }
 
+            // Check if the user has not already joined a board game night at the same day
+            if (_boardGameNightRepository.HasBoardGameNightAtSameDay(user.Id, boardGameNight.DateTime))
+            {
+                TempData["ErrorMessage"] = "You have already joined a board game night at the same day";
+                return RedirectToAction("Details", new { boardGameNightId = boardGameNight.Id });
+            }
+
             _boardGameNightRepository.AttendBoardGameNight(user.Id, boardGameNight.Id);
 
             TempData["SuccessMessage"] = "You have joined the board game night!";
@@ -502,6 +529,15 @@ namespace Web.Controllers
 
             // Add the board game to the board game night
             _boardGameNightRepository.AddBoardGameToBoardGameNight(boardGameNight.Id, boardGameId);
+
+            // If board game is for adults only, check if board game night is for adults only. If not, set it to true
+            var boardGame = _boardGameRepository.GetBoardGameById(boardGameId);
+
+            if (boardGame!.IsAdultOnly && !boardGameNight.IsAdultOnly)
+            {
+                boardGameNight.IsAdultOnly = true;
+                _boardGameNightRepository.UpdateBoardGameNight(boardGameNight);
+            }
 
             TempData["SuccessMessage"] = "Board game added to the board game night";
             return RedirectToAction("EditBoardGames", new { boardGameNightId = boardGameNight.Id });

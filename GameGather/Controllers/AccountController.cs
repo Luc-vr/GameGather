@@ -171,11 +171,6 @@ public class AccountController : Controller
         return RedirectToAction(nameof(Login));
     }
 
-    public async Task<IActionResult> AccessDenied(string returnUrl)
-    {
-        return View();
-    }
-
     public IActionResult Preferences()
     {
         // Get the preferences of the current user

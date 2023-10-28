@@ -40,7 +40,7 @@ namespace Web.Models
 
         public ICollection<User>? Attendees { get; set; }
 
-        public ICollection<Review>? Reviews { get; set; }
+        public ReviewOverviewViewModel? ReviewStats { get; set; }
 
         public bool IsHost { get; set; }
 

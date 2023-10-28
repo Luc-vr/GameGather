@@ -61,11 +61,13 @@ namespace Infrastructure.Repos
 
         public ICollection<BoardGameNight> GetAllAttendingBoardGameNightsForUser(int userId)
         {
-            // Get all board game nights where the user is an attendee
+            // Get all board game nights where the user is an attendee and it is in the future sorted by date
             return _context.BoardGameNights
                 .Include(bgn => bgn.Host)
+                .Include(bgn => bgn.Attendees)
                 .Include(bgn => bgn.BoardGames)
-                .Where(bgn => bgn.Attendees!.Any(a => a.Id == userId))
+                .Where(bgn => bgn.Attendees!.Any(a => a.Id == userId) && bgn.DateTime > DateTime.Now)
+                .OrderBy(bgn => bgn.DateTime)
                 .ToList();
         }
 
@@ -95,6 +97,7 @@ namespace Infrastructure.Repos
             // and the date is in the future sorted by date
             return _context.BoardGameNights
                 .Include(bgn => bgn.Host)
+                .Include(bgn => bgn.Attendees)
                 .Include(bgn => bgn.BoardGames)
                 .Where(bgn => bgn.Host!.Id != userId && !bgn.Attendees!.Any(a => a.Id == userId) && bgn.DateTime > DateTime.Now)
                 .OrderBy(bgn => bgn.DateTime)
@@ -231,6 +234,14 @@ namespace Infrastructure.Repos
                 .ToList();
 
             return boardGameNights;
+        }
+
+        public bool HasBoardGameNightAtSameDay(int userId, DateTime dateTime)
+        {
+            // Check if the user is already attending a board game night at the same day
+            return _context.BoardGameNights
+                .Include(bgn => bgn.Attendees)
+                .Any(bgn => bgn.Attendees!.Any(a => a.Id == userId) && bgn.DateTime.Date == dateTime.Date);
         }
     }
 }

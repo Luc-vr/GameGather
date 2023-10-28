@@ -103,9 +103,6 @@ namespace Web.Controllers
             // Get the board game night from the database
             var boardGameNight = _boardGameNightRepository.GetBoardGameNightById(reviewVM.BoardGameNightId);
 
-            // Convert the board game night to the view model
-            //var boardGameNightVM = _mapper.Map<BoardGameNightViewModel>(boardGameNight);
-
             // Check if the model is valid
             if (!ModelState.IsValid)
             {

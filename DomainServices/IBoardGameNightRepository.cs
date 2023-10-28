@@ -57,5 +57,7 @@ namespace DomainServices
         void RemoveBoardGameFromBoardGameNight(int boardGameNightId, int boardGameId);
 
         ICollection<BoardGameNight> GetBoardGameNightsWithoutUserReview(int userId);
+
+        bool HasBoardGameNightAtSameDay(int userId, DateTime dateTime);
     }
 }

@@ -27,7 +27,7 @@ public class SeedData : ISeedData
         {
             _logger.LogInformation("Preparing to seed food and drinks prefs");
 
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < 13; i++)
             {
                 FoodAndDrinksPreference fadp = new()
                 {
@@ -158,7 +158,7 @@ public class SeedData : ISeedData
             "possible hand or by bluffing opponents into folding their hands.",
             Genre = Domain.Enums.Genre.Strategy,
             GameType = Domain.Enums.GameType.Cards,
-            IsAdultOnly = false,
+            IsAdultOnly = true,
             Image = File.ReadAllBytes(Path.Combine("wwwroot/seed-images", "poker.jpg"))
         };
 
@@ -276,7 +276,7 @@ public class SeedData : ISeedData
         {
             MaxAttendees = 5,
             DateTime = DateTime.Now.AddDays(6),
-            IsAdultOnly = true,
+            IsAdultOnly = false,
             City = "Eindhoven",
             Address = "Stationsplein 17",
             FoodAndDrinksPreferenceId = 10,
@@ -286,23 +286,35 @@ public class SeedData : ISeedData
         BoardGameNight bgn7 = new()
         {
             MaxAttendees = 12,
-            DateTime = DateTime.Now.AddDays(7),
+            DateTime = DateTime.Now.AddDays(6),
             IsAdultOnly = false,
             City = "Den Haag",
             Address = "Binnenhof 8",
             FoodAndDrinksPreferenceId = 11,
-            HostId = user3.Id
+            HostId = user4.Id
         };
 
         BoardGameNight bgn8 = new()
         {
             MaxAttendees = 3,
             DateTime = DateTime.Now.AddDays(8),
-            IsAdultOnly = false,
+            IsAdultOnly = true,
             City = "Groningen",
             Address = "Grote Markt 1",
             FoodAndDrinksPreferenceId = 12,
             HostId = user3.Id
+        };
+
+        BoardGameNight bgn9 = new()
+        {
+            MaxAttendees = 2,
+            DateTime = DateTime.Now.AddDays(12),
+            IsAdultOnly = false,
+            City = "Emmen",
+            Address = "Hoofdlaan 1",
+            FoodAndDrinksPreferenceId = 13,
+            HostId = user3.Id,
+            Attendees = new List<User> { user2, user4 }
         };
 
         if (_context.BoardGameNights?.Count() == 0)
@@ -318,7 +330,8 @@ public class SeedData : ISeedData
                 bgn5,
                 bgn6,
                 bgn7,
-                bgn8
+                bgn8,
+                bgn9
             });
 
             _context.SaveChanges();
