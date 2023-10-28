@@ -72,7 +72,7 @@ namespace GameGatherRestApi.Controllers
         {
             var user = _userRepository.GetUserByEmail(User.Identity!.Name!);
 
-            var result = _boardGameNightRepository.GetAllPastHostingBoardGameNightsForUser(user.Id);
+            var result = _boardGameNightRepository.GetAllPastHostingBoardGameNightsForUser(user!.Id);
 
             if (result != null)
             {
@@ -89,7 +89,7 @@ namespace GameGatherRestApi.Controllers
         {
             var user = _userRepository.GetUserByEmail(User.Identity!.Name!);
 
-            var result = _boardGameNightRepository.GetAllHostingBoardGameNightsForUser(user.Id);
+            var result = _boardGameNightRepository.GetAllHostingBoardGameNightsForUser(user!.Id);
 
             if (result != null)
             {
@@ -106,7 +106,7 @@ namespace GameGatherRestApi.Controllers
         {
             var user = _userRepository.GetUserByEmail(User.Identity!.Name!);
 
-            var result = _boardGameNightRepository.GetAllUpcomingHostingBoardGameNightsForUser(user.Id);
+            var result = _boardGameNightRepository.GetAllUpcomingHostingBoardGameNightsForUser(user!.Id);
 
             if (result != null)
             {

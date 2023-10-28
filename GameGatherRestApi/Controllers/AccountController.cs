@@ -50,8 +50,8 @@ namespace GameGatherRestApi.Controllers
                     var securityTokenDescriptor = new SecurityTokenDescriptor
                     {
                         Subject = (await _signInManager.CreateUserPrincipalAsync(user)).Identities.First(),
-                        Expires = DateTime.Now.AddMinutes(int.Parse(_configuration["BearerTokens:ExpiryMinutes"])),
-                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["BearerTokens:Key"])), SecurityAlgorithms.HmacSha256Signature)
+                        Expires = DateTime.Now.AddMinutes(int.Parse(_configuration["BearerTokens:ExpiryMinutes"]!)),
+                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["BearerTokens:Key"]!)), SecurityAlgorithms.HmacSha256Signature)
                     };
 
                     var handler = new JwtSecurityTokenHandler();
@@ -100,7 +100,7 @@ namespace GameGatherRestApi.Controllers
                 return BadRequest("Invalid gender value");
             }
 
-            if (!user.Email.Equals(updatedProfile.Email))
+            if (!user.Email!.Equals(updatedProfile.Email))
             {
                 return BadRequest("Not allowed to alter email");
             }
@@ -136,10 +136,10 @@ namespace GameGatherRestApi.Controllers
 
             var preferencesDTO = new UserPreferenceDTO
             {
-                LactoseFree = user.FoodAndDrinksPreference.LactoseFree,
-                NutFree = user.FoodAndDrinksPreference.NutFree,
-                AlcoholFree = user.FoodAndDrinksPreference.AlcoholFree,
-                Vegetarian = user.FoodAndDrinksPreference.Vegetarian
+                LactoseFree = user.FoodAndDrinksPreference!.LactoseFree,
+                NutFree = user.FoodAndDrinksPreference!.NutFree,
+                AlcoholFree = user.FoodAndDrinksPreference!.AlcoholFree,
+                Vegetarian = user.FoodAndDrinksPreference!.Vegetarian
             };
 
             return Ok(preferencesDTO);
@@ -156,10 +156,10 @@ namespace GameGatherRestApi.Controllers
             }
 
             // Update the user's preferences with the data from the request
-            user.FoodAndDrinksPreference.LactoseFree = updatedPreferences.LactoseFree;
-            user.FoodAndDrinksPreference.NutFree = updatedPreferences.NutFree;
-            user.FoodAndDrinksPreference.AlcoholFree = updatedPreferences.AlcoholFree;
-            user.FoodAndDrinksPreference.Vegetarian = updatedPreferences.Vegetarian;
+            user.FoodAndDrinksPreference!.LactoseFree = updatedPreferences.LactoseFree;
+            user.FoodAndDrinksPreference!.NutFree = updatedPreferences.NutFree;
+            user.FoodAndDrinksPreference!.AlcoholFree = updatedPreferences.AlcoholFree;
+            user.FoodAndDrinksPreference!.Vegetarian = updatedPreferences.Vegetarian;
 
             // Save the updated user preferences
             _userRepository.UpdateUser(user);
