@@ -54,11 +54,6 @@ namespace Infrastructure.Repos
             _context.SaveChanges();
         }
 
-        public ICollection<User> GetAllAttendeesForBoardGameNight(int boardGameNightId)
-        {
-            throw new NotImplementedException();
-        }
-
         public ICollection<BoardGameNight> GetAllAttendingBoardGameNightsForUser(int userId)
         {
             // Get all board game nights where the user is an attendee and it is in the future sorted by date
@@ -69,16 +64,6 @@ namespace Infrastructure.Repos
                 .Where(bgn => bgn.Attendees!.Any(a => a.Id == userId) && bgn.DateTime > DateTime.Now)
                 .OrderBy(bgn => bgn.DateTime)
                 .ToList();
-        }
-
-        public ICollection<BoardGameNight> GetAllBoardGameNights()
-        {
-            throw new NotImplementedException();
-        }
-
-        public ICollection<BoardGame> GetAllBoardGamesForBoardGameNight(int boardGameNightId)
-        {
-            throw new NotImplementedException();
         }
 
         public ICollection<BoardGameNight> GetAllHostingBoardGameNightsForUser(int userId)
@@ -116,11 +101,6 @@ namespace Infrastructure.Repos
 
         }
 
-        public ICollection<Review> GetAllReviewsForBoardGameNight(int boardGameNightId)
-        {
-            throw new NotImplementedException();
-        }
-
         public ICollection<BoardGameNight> GetAllUpcomingHostingBoardGameNightsForUser(int userId)
         {
             // Get all board game nights where the user is the host and the date is in the future sorted by date
@@ -142,11 +122,6 @@ namespace Infrastructure.Repos
                 .Include(bgn => bgn.Reviews)
                 .Include(bgn => bgn.FoodAndDrinksPreference)
                 .FirstOrDefault(bgn => bgn.Id == id);
-        }
-
-        public FoodAndDrinksPreference GetFoodAndDrinksPreferenceForBoardGameNight(int boardGameNightId)
-        {
-            throw new NotImplementedException();
         }
 
         public void UnattendBoardGameNight(int userId, int boardGameNightId)

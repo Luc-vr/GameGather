@@ -4,14 +4,8 @@ namespace DomainServices
 {
     public interface IBoardGameNightRepository
     {
-        // Get all board game nights (US_01)
-        ICollection<BoardGameNight> GetAllBoardGameNights();
-
         // Get board game night by id (US_01)
         BoardGameNight? GetBoardGameNightById(int id);
-
-        // Get all attendees for a board game night (US_01)
-        ICollection<User> GetAllAttendeesForBoardGameNight(int boardGameNightId);
 
         // Get all hosting board game nights for a user (US_01)
         ICollection<BoardGameNight> GetAllHostingBoardGameNightsForUser(int userId);
@@ -42,15 +36,6 @@ namespace DomainServices
 
         // Unattend board game night (US_04)
         void UnattendBoardGameNight(int userId, int boardGameNightId);
-
-        // Get all board games for a board game night (US_05)
-        ICollection<BoardGame> GetAllBoardGamesForBoardGameNight(int boardGameNightId);
-
-        // Get the food and drinks preference for a board game night (US_06)
-        FoodAndDrinksPreference GetFoodAndDrinksPreferenceForBoardGameNight(int boardGameNightId);
-
-        // Get all reviews for a board game night (US_08)
-        ICollection<Review> GetAllReviewsForBoardGameNight(int boardGameNightId);
 
         void AddBoardGameToBoardGameNight(int boardGameNightId, int boardGameId);
 
