@@ -1,10 +1,10 @@
+using DomainServices;
 using Infrastructure;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
+using Infrastructure.Repos;
 using Infrastructure.Seed;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using DomainServices;
-using Infrastructure.Repos;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using NToastNotify;
 using Web.MappingProfiles;
 

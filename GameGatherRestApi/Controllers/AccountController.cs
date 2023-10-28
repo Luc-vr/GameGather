@@ -1,15 +1,14 @@
-﻿using GameGatherRestApi.Models;
+﻿using AutoMapper;
+using Domain.Enums;
+using DomainServices;
+using GameGatherRestApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using AutoMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using DomainServices;
-using Domain.Enums;
 
 namespace GameGatherRestApi.Controllers
 {
@@ -67,7 +66,7 @@ namespace GameGatherRestApi.Controllers
         [HttpGet("profile")]
         public IActionResult GetUserProfile()
         {
-            var user = _userRepository.GetUserByEmail(User.Identity!.Name!);            
+            var user = _userRepository.GetUserByEmail(User.Identity!.Name!);
 
             if (user == null)
             {
@@ -94,8 +93,7 @@ namespace GameGatherRestApi.Controllers
             if (Enum.TryParse(updatedProfile.Gender, out Gender parsedGender))
             {
                 user.Gender = parsedGender;
-            }
-            else
+            } else
             {
                 return BadRequest("Invalid gender value");
             }

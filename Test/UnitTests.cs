@@ -402,7 +402,7 @@ namespace Test
                 .Returns(user1);
 
             BoardGameNightRepositoryMock.GetAllAttendingBoardGameNightsForUser(user1.Id)
-                .Returns(new List<BoardGameNight>(){ bgn5 });
+                .Returns(new List<BoardGameNight>() { bgn5 });
 
             //Act
             var result = sut.Joining() as ViewResult;
@@ -414,7 +414,7 @@ namespace Test
             Assert.Contains(bgn5.Id, model.joinedGameNights.Select(bgnvm => bgnvm.Id));
             Assert.DoesNotContain(bgn3.Id, model.joinedGameNights.Select(bgnvm => bgnvm.Id));
         }
-        
+
         [Fact]
         public void BoardGameNight_Overview_Has_Joinable_Boardgames() //US 01
         {
@@ -643,7 +643,7 @@ namespace Test
             // Controller (System Under Test)
             var sut = new BoardGameNightController(mapper, ToastNotificationMock, UserRepositoryMock, BoardGameNightRepositoryMock, BoardGameRepositoryMock, FoodAndDrinksPrefRepositoryMock, ReviewRepositoryMock);
             sut.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
-            sut.ControllerContext = user1Context;  
+            sut.ControllerContext = user1Context;
 
             // Mock Returns
             UserRepositoryMock.GetUserByEmail("DJK@beats.nl")
@@ -765,10 +765,10 @@ namespace Test
                 FoodAndDrinksPreferenceId = 12,
                 Host = user1,
                 HostId = user1.Id,
-                BoardGames = new List<BoardGame> (),
+                BoardGames = new List<BoardGame>(),
                 Attendees = new List<User>()
             };
-              
+
             // Mock Returns
             UserRepositoryMock.GetUserByEmail("DJK@beats.nl")
                 .Returns(user1);
@@ -948,7 +948,7 @@ namespace Test
                 MaxAttendees = 10,
                 DateTime = DateTime.Now.Date.AddDays(1).AddHours(2),
                 IsAdultOnly = false,
-                Attendees = new List<User>() 
+                Attendees = new List<User>()
             };
 
             // Mock Returns
@@ -988,7 +988,7 @@ namespace Test
             var sut = new BoardGameNightController(mapper, ToastNotificationMock, UserRepositoryMock, BoardGameNightRepositoryMock, BoardGameRepositoryMock, FoodAndDrinksPrefRepositoryMock, ReviewRepositoryMock);
             sut.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
             sut.ControllerContext = user1Context;
-      
+
             // Mock Returns
             UserRepositoryMock.GetUserByEmail("DJK@beats.nl")
                 .Returns(user1);
@@ -1003,7 +1003,7 @@ namespace Test
             var viewResult = (ViewResult)result;
             Assert.IsType<BoardGameNightViewModel>(viewResult.Model);
             var boardGameNightVM = (BoardGameNightViewModel)viewResult.Model;
-            Assert.Equal(4, boardGameNightVM.BoardGames!.Count); 
+            Assert.Equal(4, boardGameNightVM.BoardGames!.Count);
             Assert.Contains(bg2.Name, boardGameNightVM.BoardGames.Select(bg => bg.Name));
             Assert.Contains(bg4.Name, boardGameNightVM.BoardGames.Select(bg => bg.Name));
             Assert.Contains(bg5.Name, boardGameNightVM.BoardGames.Select(bg => bg.Name));
@@ -1096,7 +1096,7 @@ namespace Test
                 .Returns(user1);
             BoardGameNightRepositoryMock.GetBoardGameNightById(bgn3.Id) // Bgn3 NOT Alcoholfree
                 .Returns(bgn3);
-       
+
             // Act
             var result = sut.Details(bgn3.Id);
             user1.FoodAndDrinksPreference.AlcoholFree = false; // Revert Changed Preference
@@ -1256,7 +1256,7 @@ namespace Test
             UserRepositoryMock.GetUserByEmail("DJK@beats.nl")
                 .Returns(user1);
             BoardGameNightRepositoryMock.GetBoardGameNightById(bgn3.Id)
-                .Returns(bgn3); 
+                .Returns(bgn3);
 
             // Act
             var result = sut.Details(bgn3.Id);

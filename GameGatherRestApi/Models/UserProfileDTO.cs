@@ -1,6 +1,4 @@
-﻿using Domain.Enums;
-
-namespace GameGatherRestApi.Models
+﻿namespace GameGatherRestApi.Models
 {
     public class UserProfileDTO
     {

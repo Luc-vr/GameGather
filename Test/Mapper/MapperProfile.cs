@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Web.Models;
 using Domain.Entities;
+using Web.Models;
 
 namespace Test.MappingProfiles
 {

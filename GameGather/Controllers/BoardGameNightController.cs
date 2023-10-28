@@ -1,13 +1,8 @@
 ﻿using AutoMapper;
 using Domain.Entities;
 using DomainServices;
-using Infrastructure.Repos;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
 using NToastNotify;
-using NuGet.Protocol.Plugins;
-using System.Net;
 using Web.Models;
 
 namespace Web.Controllers
@@ -416,7 +411,7 @@ namespace Web.Controllers
 
             // Get the current user from the database
             var user = _userRepository.GetUserByEmail(User.Identity!.Name!)!;
-            
+
             // Get the board game nights that the user has joined or can join
             var joinedGameNights = _boardGameNightRepository.GetAllAttendingBoardGameNightsForUser(user.Id);
             var joinableBoardGameNights = _boardGameNightRepository.GetAllJoinableBoardGameNightsForUser(user.Id);
@@ -476,7 +471,7 @@ namespace Web.Controllers
             {
                 boardGameNight.BoardGames = new List<BoardGame>();
             }
-            
+
             // Get a list of board games that are not already added to the board game night
             var notSelectedBoardGames = _boardGameRepository.GetAllBoardGamesNotInList(boardGameNight.BoardGames);
 

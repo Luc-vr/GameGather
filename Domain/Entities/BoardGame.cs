@@ -1,7 +1,6 @@
 ﻿using Domain.Enums;
 using HotChocolate;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
 namespace Domain.Entities
 {
@@ -15,7 +14,7 @@ namespace Domain.Entities
 
         [Required]
         [DataType(DataType.MultilineText)]
-        public string? Description { get; set;}
+        public string? Description { get; set; }
 
         [Required]
         public Genre Genre { get; set; }

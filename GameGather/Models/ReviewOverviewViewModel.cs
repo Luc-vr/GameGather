@@ -6,15 +6,14 @@
         {
             get
             {
-                 // Use the reviews to calculate the average score and round it to 1 decimal
-                 if (Reviews != null && Reviews.Count() > 0)
+                // Use the reviews to calculate the average score and round it to 1 decimal
+                if (Reviews != null && Reviews.Count() > 0)
                 {
                     return Math.Round(Reviews.Average(r => r.Score), 2);
-                    }
-                    else
+                } else
                 {
-                        return 0;
-                    }
+                    return 0;
+                }
             }
         }
 

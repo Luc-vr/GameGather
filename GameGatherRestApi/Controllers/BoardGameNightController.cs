@@ -4,9 +4,7 @@ using DomainServices;
 using GameGatherRestApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 
 namespace GameGatherRestApi.Controllers
 {
@@ -146,7 +144,7 @@ namespace GameGatherRestApi.Controllers
             }
 
             _boardGameNightRepository.AttendBoardGameNight(user.Id, boardGameNight.Id);
-           
+
             return Ok(new { Succes = true, Message = "You have joined the board game night!" });
         }
 

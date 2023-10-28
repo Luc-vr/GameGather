@@ -1,9 +1,4 @@
-﻿using Domain.Entities;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
-
-namespace GameGatherRestApi.Models
+﻿namespace GameGatherRestApi.Models
 {
     public class BoardGameNightDTO
     {

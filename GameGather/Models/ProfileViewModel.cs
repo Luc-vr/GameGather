@@ -1,6 +1,4 @@
-﻿using Domain.Entities;
-using Domain.Enums;
-using System.ComponentModel;
+﻿using Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 using Web.Validation;
 

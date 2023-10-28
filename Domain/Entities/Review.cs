@@ -18,7 +18,7 @@ namespace Domain.Entities
         public string? Text { get; set; }
 
         [ForeignKey("UserId")]
-        public User? User { get; set; }  
+        public User? User { get; set; }
 
         public int UserId { get; set; }
 

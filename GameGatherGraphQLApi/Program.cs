@@ -1,6 +1,6 @@
+using GameGatherGraphQLApi;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using GameGatherGraphQLApi;
 
 var builder = WebApplication.CreateBuilder(args);
 

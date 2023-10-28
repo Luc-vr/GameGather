@@ -212,7 +212,7 @@ public class AccountController : Controller
         // If the preferences are null, create a new FoodAndDrinksPreference
         preferences ??= new FoodAndDrinksPreference();
 
-       preferences = _mapper.Map(userPreferencesVM, preferences);
+        preferences = _mapper.Map(userPreferencesVM, preferences);
 
         // Update the preferences in the database
         _foodAndDrinksPrefRepository.UpdateFoodAndDrinksPref(preferences);
