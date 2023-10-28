@@ -34,22 +34,6 @@ namespace GameGatherRestApi.Controllers
             _foodAndDrinksPrefRepository = foodAndDrinksPrefRepository;
         }
 
-        // UNIMPLEMENTED
-        //[HttpGet]
-        //public ActionResult<BoardGameNight> Get()
-        //{
-        //    var result = _boardGameNightRepository.GetAllBoardGameNights();
-        //
-        //    if (result != null)
-        //    {
-        //          var boardGameNightDTO = result.Select(bgn => _mapper.Map<BoardGameNightDTO>(bgn)).ToList();
-        //
-        //          return Ok(boardGameNightDTO);
-        //    }
-        //
-        //    return NotFound();
-        //}
-
         [HttpGet("{id}")]
         public ActionResult<BoardGameNight> Get(int id)
         {
@@ -161,13 +145,6 @@ namespace GameGatherRestApi.Controllers
             {
                 return NotFound();
             }
-
-            // UNIMPLEMENTED
-            //// Check if the user is already attending the board game night
-            //if (_boardGameNightRepository.GetAllAttendeesForBoardGameNight(boardGameNight.Id).Select(u => u.Id).Contains(user.Id))
-            //{
-            //    return BadRequest("You are not currently attending this board game night.");
-            //}
 
             _boardGameNightRepository.UnattendBoardGameNight(user.Id, boardGameNight.Id);
 
