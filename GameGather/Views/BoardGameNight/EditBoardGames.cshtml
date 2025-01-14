@@ -1,116 +1,116 @@
 ﻿@model (int boardGameNightId, List<BoardGameViewModel> selectedBoardGames, List<BoardGameViewModel> notSelectedBoardGames)
 @{
-    ViewData["Title"] = "Edit board games";
+	ViewData["Title"] = "Edit board games";
 }
 
 <div class="row justify-content-center">
-        <div class="row my-4">
-            <div class="col-sm-8">
-                <h4 class="secondary">Selected board games</h4>
-            </div>
-            <div class="col-sm-4 d-flex justify-content-end">
-            <a class="btn btn-secondary d-flex align-items-center" asp-controller="BoardGameNight" asp-action="Details" asp-route-boardGameNightId="@Model.boardGameNightId">
-                <i class="fa-solid fa-arrow-left"></i>
-                <span class="ms-2">Go back</span>
-            </a>
-            </div>
-        </div>
+	<div class="row my-4">
+		<div class="col-sm-8">
+			<h4 class="secondary">Selected board games</h4>
+		</div>
+		<div class="col-sm-4 d-flex justify-content-end">
+			<a class="btn btn-secondary d-flex align-items-center" asp-controller="BoardGameNight" asp-action="Details" asp-route-boardGameNightId="@Model.boardGameNightId">
+				<i class="fa-solid fa-arrow-left"></i>
+				<span class="ms-2">Go back</span>
+			</a>
+		</div>
+	</div>
 
-        @if (Model.selectedBoardGames.Count() > 0)
-        {
-            @for (int i = 0; i < Model.selectedBoardGames.Count(); i += 4)
-            {
-                <div class="row mt-3">
-                    @foreach (BoardGameViewModel bg in Model.selectedBoardGames.Skip(i).Take(4))
-                    {
-                        <div class="col-md-3">
-                            <div class="card">
-                                @if (bg.Image is not null)
-                                {
-                                    <img src="data:image/jpeg;base64,@bg.ImageBase64" alt="Board Game Image" />
-                                }
-                                <div class="card-body">
-                                    <h5 class="card-title">@(bg.Name)</h5>
-                                    @if (bg.Description!.Length > 100)
-                                    {
-                                        <p class="card-text">@(bg.Description!.Substring(0, 100))... </p>
-                                    } else
-                                    {
-                                        <p class="card-text">@(bg.Description!)</p>
-                                    }
-                                </div>
-                                <div class="card-footer">
-                                    <form asp-controller="BoardGameNight" asp-action="RemoveBoardGame" method="post">
-                                        <input type="hidden" name="boardGameNightId" asp-for="@Model.boardGameNightId" />
-                                        <input type="hidden" name="boardGameId" asp-for="@bg.Id" />
-                                        <button type="submit" class="btn btn-danger px-3">
-                                            <i class="fa-solid fa-minus"></i>
-                                            <span class="ms-2"> Remove</span>
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                </div>
-            }
-        } else
-        {
-            <h4 class="secondary lead"><em>You did not add any board games, choose one below!</em></h4>
-        }
-    </div>
+	@if (Model.selectedBoardGames.Count() > 0)
+	{
+		@for (int i = 0; i < Model.selectedBoardGames.Count(); i += 4)
+		{
+			<div class="row mt-3">
+				@foreach (BoardGameViewModel bg in Model.selectedBoardGames.Skip(i).Take(4))
+				{
+					<div class="col-md-3">
+						<div class="card" style="height:500px">
+							@if (bg.Image is not null)
+							{
+								<img src="data:image/jpeg;base64,@bg.ImageBase64" alt="Board Game Image" class="img-fluid" style="height:250px" />
+							}
+							<div class="card-body">
+								<h5 class="card-title">@(bg.Name)</h5>
+								@if (bg.Description!.Length > 100)
+								{
+									<p class="card-text">@(bg.Description!.Substring(0, 100))... </p>
+								}
+								else
+								{
+									<p class="card-text">@(bg.Description!)</p>
+								}
+							</div>
+							<div class="card-footer">
+								<form asp-controller="BoardGameNight" asp-action="RemoveBoardGame" method="post">
+									<input type="hidden" name="boardGameNightId" asp-for="@Model.boardGameNightId" />
+									<input type="hidden" name="boardGameId" asp-for="@bg.Id" />
+									<button type="submit" class="btn btn-danger px-3">
+										<i class="fa-solid fa-minus"></i>
+										<span class="ms-2"> Remove</span>
+									</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				}
+			</div>
+		}
+	}
+	else
+	{
+		<h4 class="secondary lead"><em>You did not add any board games, choose one below!</em></h4>
+	}
 </div>
 
 <div class="row justify-content-center">
-    <div class="col-lg-10">
-        <div class="row my-4">
-            <div class="col-sm-12">
-                <h4 class="secondary">Other board games</h4>
-            </div>
-        </div>
+	<div class="row my-4">
+		<div class="col-sm-12">
+			<h4 class="secondary">Other board games</h4>
+		</div>
+	</div>
 
-        @if (Model.notSelectedBoardGames.Count() > 0)
-        {
-            @for (int i = 0; i < Model.notSelectedBoardGames.Count(); i += 4)
-            {
-                <div class="row mt-3">
-                    @foreach (BoardGameViewModel bg in Model.notSelectedBoardGames.Skip(i).Take(4))
-                    {
-                        <div class="col-md-3">
-                            <div class="card">
-                                @if (bg.Image is not null)
-                                {
-                                    <img src="data:image/jpeg;base64,@bg.ImageBase64" alt="Board Game Image" />
-                                }
-                                <div class="card-body">
-                                    <h5 class="card-title">@(bg.Name)</h5>
-                                    @if (bg.Description!.Length > 100)
-                                    {
-                                        <p class="card-text">@(bg.Description!.Substring(0, 100))... </p>
-                                    } else
-                                    {
-                                        <p class="card-text">@(bg.Description!)</p>
-                                    }
-                                </div>
-                                <div class="card-footer">
-                                    <form asp-controller="BoardGameNight" asp-action="AddBoardGame" method="post">
-                                        <input type="hidden" name="boardGameNightId" asp-for="@Model.boardGameNightId" />
-                                        <input type="hidden" name="boardGameId" asp-for="@bg.Id" />
-                                        <button type="submit" class="btn btn-primary d-flex align-items-center">
-                                            <i class="fa-solid fa-plus"></i>
-                                            <span class="ms-2">Add</span>
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                </div>
-            }
-        } else
-        {
-            <h4 class="secondary lead"><em>There are no board games yet, come back later!</em></h4>
-        }
-    </div>
+	@if (Model.notSelectedBoardGames.Count() > 0)
+	{
+		@for (int i = 0; i < Model.notSelectedBoardGames.Count(); i += 4)
+		{
+			<div class="row mt-3">
+				@foreach (BoardGameViewModel bg in Model.notSelectedBoardGames.Skip(i).Take(4))
+				{
+					<div class="col-md-3">
+						<div class="card" style="height:500px">
+							@if (bg.Image is not null)
+							{
+								<img src="data:image/jpeg;base64,@bg.ImageBase64" alt="Board Game Image" class="img-fluid" style="height:250px" />
+							}
+							<div class="card-body">
+								<h5 class="card-title">@(bg.Name)</h5>
+								@if (bg.Description!.Length > 100)
+								{
+									<p class="card-text">@(bg.Description!.Substring(0, 100))... </p>
+								}
+								else
+								{
+									<p class="card-text">@(bg.Description!)</p>
+								}
+							</div>
+							<div class="card-footer">
+								<form asp-controller="BoardGameNight" asp-action="AddBoardGame" method="post">
+									<input type="hidden" name="boardGameNightId" asp-for="@Model.boardGameNightId" />
+									<input type="hidden" name="boardGameId" asp-for="@bg.Id" />
+									<button type="submit" class="btn btn-primary d-flex align-items-center">
+										<i class="fa-solid fa-plus"></i>
+										<span class="ms-2">Add</span>
+									</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				}
+			</div>
+		}
+	}
+	else
+	{
+		<h4 class="secondary lead"><em>There are no board games yet, come back later!</em></h4>
+	}
 </div>
-

@@ -8,10 +8,10 @@
             @foreach (BoardGameViewModel bg in Model.Skip(i).Take(3))
             {
                 <div class="col-md-4">
-                    <div class="card">
+                    <div class="card" style="height:500px">
                         @if (bg.Image is not null)
                         {
-                            <img src="data:image/jpeg;base64,@bg.ImageBase64" alt="Board Game Image" />
+                            <img src="data:image/jpeg;base64,@bg.ImageBase64" alt="Board Game Image" class="img-fluid" style="height:300px"/>
                         }
                         <div class="card-body">
                             <h5 class="card-title">@(bg.Name)</h5>
