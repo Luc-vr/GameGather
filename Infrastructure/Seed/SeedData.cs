@@ -50,14 +50,14 @@ public class SeedData : ISeedData
         // Seed users
         User user1 = new()
         {
-            FirstName = "Khalid",
-            LastName = "Mimouni",
-            Email = "DJK@beats.nl",
+            FirstName = "John",
+            LastName = "Doe",
+            Email = "john@doe.nl",
             BirthDate = new DateTime(2007, 1, 1),
             FoodAndDrinksPreferenceId = 1,
-            Gender = Domain.Enums.Gender.Other,
-            City = "Enschede",
-            Address = "Rode Stierweg 42"
+            Gender = Domain.Enums.Gender.Male,
+            City = "Den Bosch",
+            Address = "Winkellaan 3"
         };
 
         User user2 = new()
@@ -277,8 +277,8 @@ public class SeedData : ISeedData
             MaxAttendees = 5,
             DateTime = DateTime.Now.AddDays(6),
             IsAdultOnly = false,
-            City = "Eindhoven",
-            Address = "Stationsplein 17",
+            City = "Den Bosch",
+            Address = "Winkellaan 3",
             FoodAndDrinksPreferenceId = 10,
             HostId = user3.Id
         };

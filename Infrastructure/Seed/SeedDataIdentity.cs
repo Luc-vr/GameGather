@@ -30,13 +30,13 @@ namespace Infrastructure.Seed
                 var user1 = new IdentityUser
                 {
                     Id = "8e445865-a24d-4543-a6c6-9443d048cdb1",
-                    Email = "DJK@beats.nl",
-                    UserName = "DJK@beats.nl",
-                    NormalizedEmail = "DJK@BEATS.NL",
-                    NormalizedUserName = "DJK@BEATS.NL"
+                    Email = "john@doe.nl",
+                    UserName = "john@doe.nl",
+                    NormalizedEmail = "JOHN@DOE.NL",
+                    NormalizedUserName = "JOHN@DOE.NL"
                 };
 
-                user1.PasswordHash = ph.HashPassword(user1, "Khalid123");
+                user1.PasswordHash = ph.HashPassword(user1, "John123");
 
                 var user2 = new IdentityUser
                 {
