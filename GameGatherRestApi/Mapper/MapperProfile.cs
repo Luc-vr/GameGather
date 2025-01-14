@@ -16,7 +16,7 @@ namespace GameGatherRestApi.Mapper
             CreateMap<FoodAndDrinksPreference, FoodAndDrinksPreferenceDTO>().ReverseMap();
             CreateMap<BoardGameNight, BoardGameNightDTO>().ForMember(
                 dest => dest.BoardGames,
-                opt => opt.MapFrom(src => src.BoardGames.Select(bg => bg.Name).ToList()))
+                opt => opt.MapFrom(src => src.BoardGames!.Select(bg => bg.Name).ToList()))
                 .ReverseMap();
         }
     }

@@ -9,6 +9,10 @@ namespace Infrastructure
         {
         }
 
+        public GameGatherDbContext()
+        {
+        }
+
         // DB sets for each entity
         public DbSet<BoardGame> BoardGames { get; set; }
 
